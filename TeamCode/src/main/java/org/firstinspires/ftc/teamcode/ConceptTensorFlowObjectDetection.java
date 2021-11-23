@@ -121,7 +121,7 @@ public class ConceptTensorFlowObjectDetection extends LinearOpMode {
           
           // I have removed the 2.5 value which I believe is the zoom factor. Testing in order to see if it improves the viewing field.
           // 11/23 TESTING
-            tfod.setZoom(0, 16.0/9.0);
+            tfod.setZoom(1.0, 16.0/9.0);
         }
 
         /** Wait for the game to begin */
