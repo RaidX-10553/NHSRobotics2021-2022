@@ -140,7 +140,7 @@ public class ConceptTensorFlowObjectDetectionTest extends LinearOpMode {
 
                       // step through the list of recognitions and display boundary info.
                       int i = 0;
-                      boolean isBallDetected = false;  
+                      boolean isDuckDetected = false;  
                       for (Recognition recognition : updatedRecognitions) {
                         telemetry.addData(String.format("label (%d)", i), recognition.getLabel());
                         telemetry.addData(String.format("  left,top (%d)", i), "%.03f , %.03f",
@@ -151,11 +151,11 @@ public class ConceptTensorFlowObjectDetectionTest extends LinearOpMode {
                         
                          // check label to see if the camera now sees a Ball         ** ADDED **
                         if (recognition.getLabel().equals("Ball")) {            //  ** ADDED **
-                             isBallDetected = true;                             //  ** ADDED **
-                             telemetry.addData("Object Detected", "Ball");      //  ** ADDED **
+                             isDuckDetected = true;                             //  ** ADDED **
+                             telemetry.addData("Object Detected", "Duck");      //  ** ADDED **
                          } else {                                               //  ** ADDED **
-                             isBallDetected = false;   
-                             telemetry.addData("Object Detected", "No Ball");   //  ** ADDED **
+                             isDuckDetected = false;   
+                             telemetry.addData("Object Not Detected", "Duck");   //  ** ADDED **
                          }                                                      //  ** ADDED **
                       }
                       telemetry.update();
