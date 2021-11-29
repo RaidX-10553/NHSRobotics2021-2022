@@ -140,7 +140,7 @@ public class ConceptTensorFlowObjectDetection extends LinearOpMode {
 
                       // step through the list of recognitions and display boundary info.
                       int i = 0;
-                      boolean isDuckDetected = false;  
+                      boolean isBallDetected = false;  
                       for (Recognition recognition : updatedRecognitions) {
                         telemetry.addData(String.format("label (%d)", i), recognition.getLabel());
                         telemetry.addData(String.format("  left,top (%d)", i), "%.03f , %.03f",
@@ -149,12 +149,13 @@ public class ConceptTensorFlowObjectDetection extends LinearOpMode {
                                 recognition.getRight(), recognition.getBottom());
                         i++;
                         
-                         // check label to see if the camera now sees a Duck         ** ADDED **
-                        if (recognition.getLabel().equals("Duck")) {            //  ** ADDED **
-                             isDuckDetected = true;                             //  ** ADDED **
-                             telemetry.addData("Object Detected", "No Duck");      //  ** ADDED **
+                         // check label to see if the camera now sees a Ball         ** ADDED **
+                        if (recognition.getLabel().equals("Ball")) {            //  ** ADDED **
+                             isBallDetected = true;                             //  ** ADDED **
+                             telemetry.addData("Object Detected", "Ball");      //  ** ADDED **
                          } else {                                               //  ** ADDED **
-                             isDuckDetected = false;                            //  ** ADDED **
+                             isBallDetected = false;   
+                             telemetry.addData("Object Detected", "No Ball");   //  ** ADDED **
                          }                                                      //  ** ADDED **
                       }
                       telemetry.update();
