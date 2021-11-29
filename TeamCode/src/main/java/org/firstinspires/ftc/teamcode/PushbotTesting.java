@@ -13,19 +13,9 @@ import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 
 
-@Autonomous(name = "Pushbot Auto Test")
+@TeleOp(name = "Pushbot Auto Test")
 public class PushbotTesting extends LinearOpMode {
-  /* Note: This sample uses the all-objects Tensor Flow model (FreightFrenzy_BCDM.tflite), which contains
-   * the following 4 detectable objects
-   *  0: Ball,
-   *  1: Cube,
-   *  2: Duck,
-   *  3: Marker (duck location tape marker)
-   *
-   *  Two additional model assets are available which only contain a subset of the objects:
-   *  FreightFrenzy_BC.tflite  0: Ball,  1: Cube
-   *  FreightFrenzy_DM.tflite  0: Duck,  1: Marker
-   */
+
     private static final String TFOD_MODEL_ASSET = "FreightFrenzy_BCDM.tflite";
     private static final String[] LABELS = {
       "Ball",
@@ -101,14 +91,14 @@ public class PushbotTesting extends LinearOpMode {
                                 recognition.getRight(), recognition.getBottom());
                         i++;
                         
-                         // check label to see if the camera now sees a Ball         ** ADDED **
-                        if (recognition.getLabel().equals("Ball")) {            //  ** ADDED **
-                             isDuckDetected = true;                             //  ** ADDED **
-                             telemetry.addData("Object Detected", "Duck");      //  ** ADDED **
-                         } else {                                               //  ** ADDED **
+                         // check label to see if the camera now sees a Ball
+                        if (recognition.getLabel().equals("Ball")) {
+                             isDuckDetected = true;
+                             telemetry.addData("Object Detected", "Duck");
+                         } else {
                              isDuckDetected = false;   
-                             telemetry.addData("Object Not Detected", "Duck");   //  ** ADDED **
-                         }                                                      //  ** ADDED **
+                             telemetry.addData("Object Not Detected", "Duck");
+                         }
                       }
                       telemetry.update();
                     }
