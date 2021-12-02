@@ -23,7 +23,7 @@ public class PushbotTesting extends OpMode {
 
     public void loop() {
         float drivePower = -gamepad1.left_stick_y;
-        float rotatePower = gamepad1.right_stick_x;      
+        float rotatePower = gamepad1.left_stick_x;      
       
         frontLeft.setPower(drivePower + rotatePower);
         frontRight.setPower(drivePower - rotatePower);
