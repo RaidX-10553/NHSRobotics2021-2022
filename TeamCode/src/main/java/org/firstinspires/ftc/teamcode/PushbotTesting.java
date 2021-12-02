@@ -8,20 +8,23 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 
 @TeleOp
-public class PushbotTesting extends OpMode {
-    DcMotor frontLeft;
-    DcMotor frontRight;
-    DcMotor backLeft;
-    DcMotor backRight;
+public class PushbotTesting extends LinearOpMode {
   
-    public void init() {
+     @Override
+    public void runOpMode() throws InterruptedException {
+       DcMotor frontLeft;
+       DcMotor frontRight;
+       DcMotor backLeft;
+       DcMotor backRight;
+  
        frontLeft = hardwareMap.dcMotor.get("FL");
        frontRight = hardwareMap.dcMotor.get("FR");
        backLeft = hardwareMap.dcMotor.get("BL");
-       backRight = hardwareMap.dcMotor.get("BR");
-    }
-
-    public void loop() {
+       backRight = hardwareMap.dcMotor.get("BR");       
+     
+    waitForStart();
+   
+    while (opModeIsActive()) {
         float drivePower = -gamepad1.left_stick_y;
         float rotatePower = gamepad1.left_stick_x;      
       
@@ -29,5 +32,11 @@ public class PushbotTesting extends OpMode {
         frontRight.setPower(drivePower - rotatePower);
         backLeft.setPower(drivePower + rotatePower);
         backRight.setPower(drivePower - rotatePower);
+       
+    }
+        
+      
+        idle();
     }
 }
+    
