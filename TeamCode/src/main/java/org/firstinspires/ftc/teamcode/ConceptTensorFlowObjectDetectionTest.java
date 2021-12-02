@@ -49,7 +49,7 @@ import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
  * IMPORTANT: In order to use this OpMode, you need to obtain your own Vuforia license key as
  * is explained below.
  */
-@TeleOp(name = "Concept: TensorFlow Object Detection Test", group = "Concept")
+@TeleOp(name = "Concept: TensorFlow Object Detection Test 2", group = "Concept")
 //@Disabled
 public class ConceptTensorFlowObjectDetectionTest extends LinearOpMode {
   /* Note: This sample uses the all-objects Tensor Flow model (FreightFrenzy_BCDM.tflite), which contains
@@ -121,7 +121,8 @@ public class ConceptTensorFlowObjectDetectionTest extends LinearOpMode {
           
           // I have removed the 2.5 value which I believe is the zoom factor. Testing in order to see if it improves the viewing field.
           // 11/23 TESTING
-            tfod.setZoom(1.0, 16.0/9.0);
+            // Back to 2.5 zoom, works faster
+            tfod.setZoom(2.5, 16.0/9.0);
         }
 
         /** Wait for the game to begin */
