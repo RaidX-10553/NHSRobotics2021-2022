@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 @TeleOp
 public class PushbotTesting extends LinearOpMode {
   
-     @Override
+    @Override
     public void runOpMode() throws InterruptedException {
        DcMotor frontLeft;
        DcMotor frontRight;
@@ -32,10 +32,8 @@ public class PushbotTesting extends LinearOpMode {
         frontRight.setPower(drivePower - rotatePower);
         backLeft.setPower(drivePower + rotatePower);
         backRight.setPower(drivePower - rotatePower);
-       
-    }
         
-      
+    } 
         idle();
     }
 }
