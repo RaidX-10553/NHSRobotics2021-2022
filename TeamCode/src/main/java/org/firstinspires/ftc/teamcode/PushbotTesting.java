@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 
-@TeleOp(name = "Teleop Pushbot", group = "TeleOp")
+@TeleOp(name = "Teleop Pushbot Strafe", group = "TeleOp")
 public class PushbotTesting extends LinearOpMode {
   
     @Override
@@ -25,8 +25,8 @@ public class PushbotTesting extends LinearOpMode {
       // If bot spins when going forward, uncomment the stuff below
       // either left or right
       
-       frontRight.setDirection(DcMotorSimple.Direction.REVERSE);
-       backRight.setDirection(DcMotorSimple.Direction.REVERSE);
+       frontRight.setDirection(DcMotor.Direction.REVERSE);
+       backRight.setDirection(DcMotor.Direction.REVERSE);
       
     //   frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
     //   backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -58,10 +58,10 @@ public class PushbotTesting extends LinearOpMode {
           double frontRightPower = (y - x - rx) / denominator;
           double backRightPower = (y + x - rx) / denominator;
 
-          motorFrontLeft.setPower(frontLeftPower);
-          motorBackLeft.setPower(backLeftPower);
-          motorFrontRight.setPower(frontRightPower);
-          motorBackRight.setPower(backRightPower);
+          frontLeft.setPower(frontLeftPower);
+          backLeft.setPower(backLeftPower);
+          frontRight.setPower(frontRightPower);
+          backRight.setPower(backRightPower);
       
     } 
         idle();
