@@ -20,7 +20,16 @@ public class PushbotTesting extends LinearOpMode {
        frontLeft = hardwareMap.dcMotor.get("FL");
        frontRight = hardwareMap.dcMotor.get("FR");
        backLeft = hardwareMap.dcMotor.get("BL");
-       backRight = hardwareMap.dcMotor.get("BR");       
+       backRight = hardwareMap.dcMotor.get("BR");      
+      
+      // If bot spins when going forward, uncomment the stuff below
+      // either left or right
+      
+    //   frontRight.setDirection(DcMotorSimple.Direction.REVERSE);
+    //   backRight.setDirection(DcMotorSimple.Direction.REVERSE);
+      
+    //   frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+    //   backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
      
     waitForStart();
    
