@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 
-@TeleOp(name = "Teleop Pushbot Strafe", group = "TeleOp")
+@TeleOp(name = "Teleop Pushbot", group = "TeleOp")
 public class PushbotTesting extends LinearOpMode {
   
     @Override
@@ -34,8 +34,8 @@ public class PushbotTesting extends LinearOpMode {
     waitForStart();
    
     while (opModeIsActive()) {
-        //float drivePower = -gamepad1.left_stick_y;
-        //float rotatePower = gamepad1.left_stick_x;      
+        //float drivePower = gamepad1.left_stick_y;
+        //float rotatePower = gamepad1.left_stick_x;
       
         //frontLeft.setPower(drivePower + rotatePower);
         //frontRight.setPower(drivePower - rotatePower);
@@ -45,9 +45,9 @@ public class PushbotTesting extends LinearOpMode {
       
       
       
-          double y = -gamepad1.left_stick_y; // Remember, this is reversed!
-          double x = gamepad1.left_stick_x * 1.1; // Counteract imperfect strafing
-          double rx = gamepad1.right_stick_x;
+          double y = gamepad1.left_stick_y; // Remember, this is reversed!
+          double x = -gamepad1.right_stick_x * 1.1; // Counteract imperfect strafing
+          double rx = -gamepad1.left_stick_x;
           
             // Denominator is the largest motor power (absolute value) or 1
             // This ensures all the powers maintain the same ratio, but only when
