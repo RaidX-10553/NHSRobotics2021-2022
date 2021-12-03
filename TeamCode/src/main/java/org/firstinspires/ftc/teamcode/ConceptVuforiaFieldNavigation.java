@@ -73,7 +73,7 @@ import java.util.List;
  * is explained below.
  */
 
-@TeleOp(name="Vuforia Field Nav", group ="Concept")
+@TeleOp(name="Vuforia Field Nav 2", group ="Concept")
 //@Disabled
 public class ConceptVuforiaFieldNavigation extends LinearOpMode {
 
