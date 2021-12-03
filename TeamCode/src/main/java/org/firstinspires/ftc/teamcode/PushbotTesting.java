@@ -28,8 +28,8 @@ public class PushbotTesting extends LinearOpMode {
     //   frontRight.setDirection(DcMotorSimple.Direction.REVERSE);
     //   backRight.setDirection(DcMotorSimple.Direction.REVERSE);
       
-    //   frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
-    //   backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+       frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+       backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
      
     waitForStart();
    
