@@ -151,7 +151,7 @@ public class ConceptTensorFlowObjectDetectionTest extends LinearOpMode {
                         i++;
                         
                          // check label to see if the camera now sees a Ball         ** ADDED **
-                        if (recognition.getLabel().equals("Ball")) {            //  ** ADDED **
+                        if (recognition.getLabel().equals("Duck")) {            //  ** ADDED **
                              isDuckDetected = true;                             //  ** ADDED **
                              telemetry.addData("Object Detected", "Duck");      //  ** ADDED **
                          } else {                                               //  ** ADDED **
