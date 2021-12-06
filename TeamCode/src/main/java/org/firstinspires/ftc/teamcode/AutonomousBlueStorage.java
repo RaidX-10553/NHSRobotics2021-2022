@@ -96,13 +96,48 @@ public class AutonomousBlueStorage extends LinearOpMode{
                          }                                                      //  ** ADDED **
                       }
                       telemetry.update();
-          
+                    }
+                }
+            }
+        }
         
         if (isStopRequested()) return;
         
 
+
+
         
 
 
+    }
+    
+
+    private void initVuforia() {
+        /*
+         * Configure Vuforia by creating a Parameter object, and passing it to the Vuforia engine.
+         */
+        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
+
+        parameters.vuforiaLicenseKey = VUFORIA_KEY;
+        parameters.cameraDirection = CameraDirection.BACK;
+
+        //  Instantiate the Vuforia engine
+        vuforia = ClassFactory.getInstance().createVuforia(parameters);
+
+        // Loading trackables is not necessary for the TensorFlow Object Detection engine.
+    }
+
+    /**
+     * Initialize the TensorFlow Object Detection engine.
+     */
+    private void initTfod() {
+        int tfodMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
+            "tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
+        tfodParameters.minResultConfidence = 0.5f;
+        tfodParameters.isModelTensorFlow2 = true;
+        tfodParameters.inputSize = 320;
+        tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
+        tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABELS);
     }
 }
