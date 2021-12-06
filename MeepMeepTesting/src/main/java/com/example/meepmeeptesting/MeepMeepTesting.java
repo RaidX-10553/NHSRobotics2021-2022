@@ -41,7 +41,7 @@ public class MeepMeepTesting {
                                 .build()
                 );
         meepMeep
-                .setBackground(MeepMeep.Background.FIELD_FREIGHTFRENZY_OFFICIAL)
+                .setBackground(MeepMeep.Background.FIELD_FREIGHTFRENZY_ADI_DARK)
                 .setTheme(new ColorSchemeBlueDark())
                 .setBackgroundAlpha(1f)
                 .addEntity(bot)
