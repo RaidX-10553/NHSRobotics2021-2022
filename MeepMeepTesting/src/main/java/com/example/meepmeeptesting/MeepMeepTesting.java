@@ -24,10 +24,16 @@ public class MeepMeepTesting {
                         drive.trajectorySequenceBuilder(START_POSE)
                                 //put ur trajectory here
                                 //for example
-                                .splineTo(new Vector2d(-24.5, -31.2), Math.toRadians(0))
-                                .turn(Math.toRadians(-90))
-                                .splineToLinearHeading(new Pose2d(-63.25, -63.25, Math.toRadians(180)), Math.toRadians(-90))
+                                .setReversed(true)
+                                .splineTo(new Vector2d(-25.5, -40.5), Math.toRadians(45))
+                                .setReversed(false)
+                                .back(5)
+                                .strafeRight(5)
+                                .forward(15)
+                                .turn(Math.toRadians(-45))
+                                .splineToLinearHeading(new Pose2d(-52.25, -63.25, Math.toRadians(180)), Math.toRadians(-90))
                                 .strafeRight(28.65)
+                                .forward(5)
                                 .build()
                 );
 
@@ -40,7 +46,7 @@ public class MeepMeepTesting {
                         drive.trajectorySequenceBuilder(START_POSE2)
                                 //put ur trajectory here
                                 //for example
-                                .splineTo(new Vector2d(10, 10), 15)
+                                .splineTo(new Vector2d(16, -62.35), 15)
                                 .build()
                 );
         meepMeep
