@@ -97,7 +97,7 @@ public class AutonomousBlueWarehouse extends LinearOpMode {
 
 
     }
-     * Initialize the Vuforia localization engine.
+     /* Initialize the Vuforia localization engine.
      */
     private void initVuforia() {
         /*

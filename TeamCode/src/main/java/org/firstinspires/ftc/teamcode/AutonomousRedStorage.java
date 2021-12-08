@@ -97,7 +97,7 @@ public class AutonomousRedStorage extends LinearOpMode {
 
 
     }
-     * Initialize the Vuforia localization engine.
+     /* Initialize the Vuforia localization engine.
      */
     private void initVuforia() {
         /*
