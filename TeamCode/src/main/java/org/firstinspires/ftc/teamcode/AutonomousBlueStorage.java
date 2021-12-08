@@ -56,6 +56,7 @@ public class AutonomousBlueStorage extends LinearOpMode {
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
+        if (isStopRequested()) return;
         
         if (opModeIsActive()) {
             while (opModeIsActive()) {
