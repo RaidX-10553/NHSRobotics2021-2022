@@ -6,15 +6,25 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.acmerobotics.roadrunner.geometry.Vector2d;
+import com.acmerobotics.roadrunner.trajectory.Trajectory;
+import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
+
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import java.util.List;
+
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection;
 import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
+
+import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
 @Autonomous(name="AutoBlueStorage", group="Autonomous")
 public class AutonomousBlueStorage extends LinearOpMode {
@@ -39,7 +49,28 @@ public class AutonomousBlueStorage extends LinearOpMode {
 
     @Override
     public void runOpMode() {
+        //Road Runner Trajectory
+        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
 
+        Pose2d startPose = new Pose2d(-35, -63.25, Math.toRadians(270));
+
+        drive.setPoseEstimate(startPose);
+
+        TrajectorySequence trajSeq = drive.trajectorySequenceBuilder(startPose)
+                .setReversed(true)
+                .splineTo(new Vector2d(-25.5, -40.5), Math.toRadians(45))
+                .setReversed(false)
+                .back(5)
+                .strafeRight(5)
+                .forward(15)
+                .turn(Math.toRadians(-45))
+                .splineToLinearHeading(new Pose2d(-52.25, -63.25, Math.toRadians(180)), Math.toRadians(-90))
+                .strafeRight(28.65)
+                .forward(5)
+                .build();
+
+
+        //Vuforia Init
         initVuforia();
         initTfod();
 
@@ -95,7 +126,7 @@ public class AutonomousBlueStorage extends LinearOpMode {
         
 
         // Continue Auto here with roadrunner
-
+        drive.followTrajectorySequence(trajSeq);
 
     }
       //Initialize the Vuforia localization engine.
