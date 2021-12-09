@@ -27,10 +27,16 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 import org.firstinspires.ftc.teamcode.ConceptTensorFlowObjectDetection;
 
-@Autonomous(name="AutoBlueStorage", group="Autonomous")
+@Autonomous(name="AutoBlueStorage1", group="Autonomous")
 public class AutonomousBlueStorage extends LinearOpMode {
 
     /* Declare OpMode members. */
+    DcMotor frontLeft;
+    DcMotor frontRight;
+    DcMotor backLeft;
+    DcMotor backRight;
+
+
 
     private static final String TFOD_MODEL_ASSET = "FreightFrenzy_BCDM.tflite";
     private static final String[] LABELS = {
@@ -53,6 +59,10 @@ public class AutonomousBlueStorage extends LinearOpMode {
         //Still working on the trajectories, not final
         //Road Runner Trajectory
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
+        frontLeft = hardwareMap.dcMotor.get("FL");
+        frontRight = hardwareMap.dcMotor.get("FR");
+        backLeft = hardwareMap.dcMotor.get("BL");
+        backRight = hardwareMap.dcMotor.get("BR");
 
         Pose2d startPose = new Pose2d(-35, -63.25, Math.toRadians(270));
 
@@ -112,6 +122,7 @@ public class AutonomousBlueStorage extends LinearOpMode {
         
 
         // Wait for the game to start (driver presses PLAY)
+
         waitForStart();
 
         if (isStopRequested()) return;
@@ -149,9 +160,10 @@ public class AutonomousBlueStorage extends LinearOpMode {
                     }
                 }
             }
+            drive.followTrajectorySequence(level1);
         }
         
-        drive.followTrajectorySequence(level1);
+
         
 
         // Continue Auto here with roadrunner
@@ -184,6 +196,33 @@ public class AutonomousBlueStorage extends LinearOpMode {
         //Continue more auto stuff
 
 
-    }      
-    
+    }
+    private void initVuforia() {
+        /*
+         * Configure Vuforia by creating a Parameter object, and passing it to the Vuforia engine.
+         */
+        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
+
+        parameters.vuforiaLicenseKey = VUFORIA_KEY;
+        parameters.cameraDirection = CameraDirection.BACK;
+
+        //  Instantiate the Vuforia engine
+        vuforia = ClassFactory.getInstance().createVuforia(parameters);
+
+        // Loading trackables is not necessary for the TensorFlow Object Detection engine.
+    }
+
+    /**
+     * Initialize the TensorFlow Object Detection engine.
+     */
+    private void initTfod() {
+        int tfodMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
+                "tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
+        tfodParameters.minResultConfidence = 0.5f;
+        tfodParameters.isModelTensorFlow2 = true;
+        tfodParameters.inputSize = 320;
+        tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
+        tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABELS);
+    }
 }
