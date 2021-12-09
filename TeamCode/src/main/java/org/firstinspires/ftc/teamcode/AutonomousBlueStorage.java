@@ -27,10 +27,16 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 import org.firstinspires.ftc.teamcode.ConceptTensorFlowObjectDetectionTest;
 
-@Autonomous(name="AutoBlueStorage", group="Autonomous")
+@Autonomous(name="AutoBlueStorage1", group="Autonomous")
 public class AutonomousBlueStorage extends LinearOpMode {
 
     /* Declare OpMode members. */
+    DcMotor frontLeft;
+    DcMotor frontRight;
+    DcMotor backLeft;
+    DcMotor backRight;
+
+
 
     private static final String TFOD_MODEL_ASSET = "FreightFrenzy_BCDM.tflite";
     private static final String[] LABELS = {
@@ -53,6 +59,10 @@ public class AutonomousBlueStorage extends LinearOpMode {
         //Still working on the trajectories, not final
         //Road Runner Trajectory
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
+        frontLeft = hardwareMap.dcMotor.get("FL");
+        frontRight = hardwareMap.dcMotor.get("FR");
+        backLeft = hardwareMap.dcMotor.get("BL");
+        backRight = hardwareMap.dcMotor.get("BR");
 
         Pose2d startPose = new Pose2d(-35, -63.25, Math.toRadians(270));
 
@@ -112,6 +122,7 @@ public class AutonomousBlueStorage extends LinearOpMode {
         
 
         // Wait for the game to start (driver presses PLAY)
+
         waitForStart();
 
         if (isStopRequested()) return;
@@ -149,9 +160,10 @@ public class AutonomousBlueStorage extends LinearOpMode {
                     }
                 }
             }
+            drive.followTrajectorySequence(level1);
         }
         
-        drive.followTrajectorySequence(level1);
+
         
 
         // Continue Auto here with roadrunner
