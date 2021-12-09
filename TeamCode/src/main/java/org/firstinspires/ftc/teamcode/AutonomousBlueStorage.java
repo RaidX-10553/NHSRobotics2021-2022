@@ -25,6 +25,7 @@ import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
+import org.firstinspires.ftc.teamcode.ConceptTensorFlowObjectDetection;
 
 @Autonomous(name="AutoBlueStorage", group="Autonomous")
 public class AutonomousBlueStorage extends LinearOpMode {
@@ -49,6 +50,7 @@ public class AutonomousBlueStorage extends LinearOpMode {
 
     @Override
     public void runOpMode() {
+        //Still working on the trajectories, not final
         //Road Runner Trajectory
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
 
@@ -56,7 +58,7 @@ public class AutonomousBlueStorage extends LinearOpMode {
 
         drive.setPoseEstimate(startPose);
 
-        TrajectorySequence trajSeq = drive.trajectorySequenceBuilder(startPose)
+        TrajectorySequence level1 = drive.trajectorySequenceBuilder(startPose)
                 .setReversed(true)
                 .splineTo(new Vector2d(-25.5, -40.5), Math.toRadians(45))
                 .setReversed(false)
@@ -69,6 +71,31 @@ public class AutonomousBlueStorage extends LinearOpMode {
                 .forward(5)
                 .build();
 
+        TrajectorySequence level2 = drive.trajectorySequenceBuilder(startPose)
+                .setReversed(true)
+                .splineTo(new Vector2d(-25.5, -40.5), Math.toRadians(45))
+                .setReversed(false)
+                .back(5)
+                .strafeRight(5)
+                .forward(15)
+                .turn(Math.toRadians(-45))
+                .splineToLinearHeading(new Pose2d(-52.25, -63.25, Math.toRadians(180)), Math.toRadians(-90))
+                .strafeRight(28.65)
+                .forward(5)
+                .build();
+
+        TrajectorySequence level3 = drive.trajectorySequenceBuilder(startPose)
+                .setReversed(true)
+                .splineTo(new Vector2d(-25.5, -40.5), Math.toRadians(45))
+                .setReversed(false)
+                .back(5)
+                .strafeRight(5)
+                .forward(15)
+                .turn(Math.toRadians(-45))
+                .splineToLinearHeading(new Pose2d(-52.25, -63.25, Math.toRadians(180)), Math.toRadians(-90))
+                .strafeRight(28.65)
+                .forward(5)
+                .build();
 
         //Vuforia Init
         initVuforia();
@@ -112,10 +139,10 @@ public class AutonomousBlueStorage extends LinearOpMode {
                          // check label to see if the camera now sees a Ball         ** ADDED **
                         if (recognition.getLabel().equals("Duck")) {            //  ** ADDED **
                              isDuckDetected = true;                             //  ** ADDED **
-                             telemetry.addData("Object Detected", "Duck");      //  ** ADDED **
+                             telemetry.addData("Duck Detected", "Going to location");      //  ** ADDED **
                          } else {                                               //  ** ADDED **
                              isDuckDetected = false;   
-                             telemetry.addData("Object Not Detected", "Duck");   //  ** ADDED **
+                             telemetry.addData("Duck Not Detected", "Going to level 3");   //  ** ADDED **
                          }                                                      //  ** ADDED **
                       }
                       telemetry.update();
@@ -124,39 +151,39 @@ public class AutonomousBlueStorage extends LinearOpMode {
             }
         }
         
+        drive.followTrajectorySequence(level1);
+        
 
         // Continue Auto here with roadrunner
-        drive.followTrajectorySequence(trajSeq);
+        // Need to figure out how to determine location of duck and use the if statement
+        //if (//duck location = 1) {
+        //drive.followTrajectorySequence(level1);
+        //}
 
-    }
-      //Initialize the Vuforia localization engine.
+        //if (//duck location = 2) {
+        //drive.followTrajectorySequence(level2);
+        //}
 
-    private void initVuforia() {
-        /*
-         * Configure Vuforia by creating a Parameter object, and passing it to the Vuforia engine.
-         */
-        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
+        //if (//duck location = 3) {
+        //drive.followTrajectorySequence(level3);
+        //}
 
-        parameters.vuforiaLicenseKey = VUFORIA_KEY;
-        parameters.cameraDirection = CameraDirection.BACK;
+        // Should I use the one above? or the if, else-if, else
+        // Benefit of using the one below is that if tfod doesn't detect anything at all, 
+        // the robot will still deliver pre-box on top level. 
+        //if (//duck location = 1) {
+        //    drive.followTrajectorySequence(level1);
+        //} else if (//duck location = 2) {
+        //    drive.followTrajectorySequence(level2);
+        //} else {
+        //    drive.followTrajectorySequence(level3);
+        //}
 
-        //  Instantiate the Vuforia engine
-        vuforia = ClassFactory.getInstance().createVuforia(parameters);
 
-        // Loading trackables is not necessary for the TensorFlow Object Detection engine.
-    }
 
-    /**
-     * Initialize the TensorFlow Object Detection engine.
-     */
-    private void initTfod() {
-        int tfodMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
-            "tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
-        tfodParameters.minResultConfidence = 0.5f;
-        tfodParameters.isModelTensorFlow2 = true;
-        tfodParameters.inputSize = 320;
-        tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
-        tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABELS);
-    }
+        //Continue more auto stuff
+
+
+    }      
+    
 }
