@@ -8,10 +8,10 @@ import com.qualcomm.robotcore.hardware.DcMotorController;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.checkerframework.checker.units.qual.Speed;
-//jacob likes men
+
 @Autonomous(name="BasicEncoderAuto", group="Autonomous")
 public class BasicEncoderAuto extends LinearOpMode {
-//sean likes men
+
     private DcMotor frontLeft = null;
     private DcMotor frontRight = null;
     private DcMotor backLeft = null;
