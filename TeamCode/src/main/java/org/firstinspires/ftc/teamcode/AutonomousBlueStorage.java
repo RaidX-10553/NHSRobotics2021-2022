@@ -159,8 +159,9 @@ public class AutonomousBlueStorage extends LinearOpMode {
                       telemetry.update();
                     }
                 }
+                drive.followTrajectorySequence(level1);
             }
-            drive.followTrajectorySequence(level1);
+
         }
         
 
