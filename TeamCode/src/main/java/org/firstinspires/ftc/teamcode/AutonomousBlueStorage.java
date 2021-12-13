@@ -2,7 +2,7 @@
 // Starting at Blue wall | Storage side 
 // Scoring pre-loaded box
 // Going to Carousel and delivering duck onto ground 
-// Parking completely in warehouse
+// Parking completely in storage
 
 package org.firstinspires.ftc.teamcode;
 
@@ -25,9 +25,8 @@ import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
-import org.firstinspires.ftc.teamcode.ConceptTensorFlowObjectDetectionTest;
 
-@Autonomous(name="AutoBlueStorage1", group="Autonomous")
+@Autonomous(name="AutoBlueStorage", group="Autonomous")
 public class AutonomousBlueStorage extends LinearOpMode {
 
     /* Declare OpMode members. */
@@ -126,7 +125,7 @@ public class AutonomousBlueStorage extends LinearOpMode {
         waitForStart();
 
         if (isStopRequested()) return;
-        
+        drive.followTrajectorySequence(level1);
         if (opModeIsActive()) {
             while (opModeIsActive()) {
                 if (tfod != null) {
@@ -159,7 +158,6 @@ public class AutonomousBlueStorage extends LinearOpMode {
                       telemetry.update();
                     }
                 }
-                drive.followTrajectorySequence(level1);
             }
 
         }
