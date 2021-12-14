@@ -58,6 +58,7 @@ public class AutonomousBlueStorage extends LinearOpMode {
                  * For a rear facing camera or a webcam, rotation is defined assuming the camera is facing
                  * away from the user.
                  */
+                //phoneCam.startStreaming(640, 480, OpenCvCameraRotation.SIDEWAYS_RIGHT);
                 phoneCam.startStreaming(640, 480, OpenCvCameraRotation.UPRIGHT);
             }
 
@@ -73,32 +74,32 @@ public class AutonomousBlueStorage extends LinearOpMode {
         //Road Runner Trajectory
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
 
-        Pose2d startPose = new Pose2d(-35, -63.25, Math.toRadians(90));
+        Pose2d startPose = new Pose2d(-35, 63.25, Math.toRadians(270));
         drive.setPoseEstimate(startPose);
 
         TrajectorySequence level1 = drive.trajectorySequenceBuilder(startPose)
-                .splineTo(new Vector2d(-21, -37), Math.toRadians(50))
+                .splineTo(new Vector2d(-21, 37), Math.toRadians(-50))
                 .back(20)
-                .turn(Math.toRadians(130))
-                .splineToLinearHeading(new Pose2d(-52.25, -63.25, Math.toRadians(180)), Math.toRadians(-90))
+                .turn(Math.toRadians(-130))
+                .splineToLinearHeading(new Pose2d(-52.25, 63.25, Math.toRadians(180)), Math.toRadians(90))
                 .strafeRight(28.65)
                 .forward(5)
                 .build();
 
         TrajectorySequence level2 = drive.trajectorySequenceBuilder(startPose)
-                .splineTo(new Vector2d(-21, -37), Math.toRadians(50))
+                .splineTo(new Vector2d(-21, 37), Math.toRadians(-50))
                 .back(20)
-                .turn(Math.toRadians(130))
-                .splineToLinearHeading(new Pose2d(-52.25, -63.25, Math.toRadians(180)), Math.toRadians(-90))
+                .turn(Math.toRadians(-130))
+                .splineToLinearHeading(new Pose2d(-52.25, 63.25, Math.toRadians(180)), Math.toRadians(90))
                 .strafeRight(28.65)
                 .forward(5)
                 .build();
 
         TrajectorySequence level3 = drive.trajectorySequenceBuilder(startPose)
-                .splineTo(new Vector2d(-21, -37), Math.toRadians(50))
+                .splineTo(new Vector2d(-21, 37), Math.toRadians(-50))
                 .back(20)
-                .turn(Math.toRadians(130))
-                .splineToLinearHeading(new Pose2d(-52.25, -63.25, Math.toRadians(180)), Math.toRadians(-90))
+                .turn(Math.toRadians(-130))
+                .splineToLinearHeading(new Pose2d(-52.25, 63.25, Math.toRadians(180)), Math.toRadians(90))
                 .strafeRight(28.65)
                 .forward(5)
                 .build();
