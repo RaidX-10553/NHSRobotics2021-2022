@@ -14,9 +14,8 @@ public class MeepMeepTesting {
 
         MeepMeep meepMeep = new MeepMeep(1080, 60);
 
-        Pose2d START_POSE = new Pose2d(-35, -63.25, Math.toRadians(270));
+        Pose2d START_POSE = new Pose2d(-35, -63.25, Math.toRadians(90));
 
-        Pose2d START_POSE2 = new Pose2d(15,-63.25, Math.toRadians(90));
         RoadRunnerBotEntity bot = new DefaultBotBuilder(meepMeep)
                 .setConstraints(30, 30, Math.toRadians(180), Math.toRadians(180), 13.5)
                 .setColorScheme(new ColorSchemeBlueDark())
@@ -24,29 +23,32 @@ public class MeepMeepTesting {
                         drive.trajectorySequenceBuilder(START_POSE)
                                 //put ur trajectory here
                                 //for example
-                                .setReversed(true)
-                                .splineTo(new Vector2d(-25.5, -40.5), Math.toRadians(45))
-                                .setReversed(false)
-                                .back(5)
-                                .strafeRight(5)
-                                .forward(15)
-                                .turn(Math.toRadians(-45))
+                                .splineTo(new Vector2d(-21, -37), Math.toRadians(50))
+                                .back(20)
+                                .turn(Math.toRadians(130))
                                 .splineToLinearHeading(new Pose2d(-52.25, -63.25, Math.toRadians(180)), Math.toRadians(-90))
                                 .strafeRight(28.65)
                                 .forward(5)
                                 .build()
                 );
 
+        Pose2d START_POSE2 = new Pose2d(-35,63.25, Math.toRadians(270));
+
         // You can add a second bot if you want.
         // You can comment this out as well if you only want one
         RoadRunnerBotEntity bot2 = new DefaultBotBuilder(meepMeep)
-                .setConstraints(30, 60, Math.toRadians(180), Math.toRadians(180), 13)
+                .setConstraints(30, 30, Math.toRadians(180), Math.toRadians(180), 13)
                 .setColorScheme(new ColorSchemeRedDark())
                 .followTrajectorySequence(drive ->
                         drive.trajectorySequenceBuilder(START_POSE2)
                                 //put ur trajectory here
                                 //for example
-                                .splineTo(new Vector2d(16, -62.35), 15)
+                                .splineTo(new Vector2d(-21, 37), Math.toRadians(-50))
+                                .back(20)
+                                .turn(Math.toRadians(-130))
+                                .splineToLinearHeading(new Pose2d(-52.25, 63.25, Math.toRadians(180)), Math.toRadians(90))
+                                .strafeLeft(28.65)
+                                .forward(5)
                                 .build()
                 );
         meepMeep
