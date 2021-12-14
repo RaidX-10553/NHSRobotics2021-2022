@@ -34,6 +34,7 @@ public class AutonomousBlueStorage extends LinearOpMode {
     OpenCvCamera phoneCam;
 
     AprilTagLocation getLastPosition = AprilTagLocation.UNKNOWN;
+    started = false
 
     @Override
     public void runOpMode() {
@@ -57,7 +58,7 @@ public class AutonomousBlueStorage extends LinearOpMode {
                  * For a rear facing camera or a webcam, rotation is defined assuming the camera is facing
                  * away from the user.
                  */
-                phoneCam.startStreaming(640, 480, OpenCvCameraRotation.SIDEWAYS_LEFT);
+                phoneCam.startStreaming(640, 480, OpenCvCameraRotation.UPRIGHT);
             }
 
             @Override
@@ -121,19 +122,32 @@ public class AutonomousBlueStorage extends LinearOpMode {
         // Continue Auto here with roadrunner
         // Need to figure out how to determine location of duck and use the if statement
 
-        //  Should I use the one above? or the if, else-if, else
-        // Benefit of using the one below is that if tfod doesn't detect anything at all,
+        
+        // Benefit of using if, else-if, else, is because if eocv doesn't detect anything at all,
         // the robot will still deliver pre-box on top level. 
        if (getLastPosition == AprilTagLocation.LEFT) {
+            started = true
             drive.followTrajectorySequence(level1);
+            telemetry.addData("Going to Level 1");
+            telemetry.update();
         } else if (getLastPosition == AprilTagLocation.MIDDLE) {
+            started = true
             drive.followTrajectorySequence(level2);
+            telemetry.addData("Going to Level 2");
+            telemetry.update();
         } else if (getLastPosition == AprilTagLocation.RIGHT){
+            started = true
             drive.followTrajectorySequence(level3);
+            telemetry.addData("Going to Level 3");
+            telemetry.update();
         }
         else {
             drive.followTrajectorySequence(level3);
+            started = true
+            telemetry.addData("Failed to detect: Go --> Level3 ");
+            telemetry.update();
         }
+
         while (opModeIsActive()) {
             /*
              * Send some stats to the telemetry
@@ -151,7 +165,7 @@ public class AutonomousBlueStorage extends LinearOpMode {
              * when it will be automatically stopped for you) *IS* supported. The "if" statement
              * below will stop streaming from the camera when the "A" button on gamepad 1 is pressed.
              */
-            if (gamepad1.a) {
+            if (started == true) {
                 /*
                  * IMPORTANT NOTE: calling stopStreaming() will indeed stop the stream of images
                  * from the camera (and, by extension, stop calling your vision pipeline). HOWEVER,
