@@ -2,7 +2,7 @@
 // Starting at Red wall | Storage side 
 // Scoring pre-loaded box
 // Going to Carousel and delivering duck onto ground 
-// Parking completely in warehouse
+// Parking completely in storage
 
 package org.firstinspires.ftc.teamcode;
 
@@ -27,7 +27,7 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
 
-@Autonomous(name="AutoBlueStorage", group="Autonomous")
+@Autonomous(name="AutoRedStorage", group="Autonomous")
 public class AutonomousRedStorage extends LinearOpMode {
 
     /* Declare OpMode members. */
