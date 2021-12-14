@@ -34,7 +34,7 @@ public class AutonomousBlueStorage extends LinearOpMode {
     OpenCvCamera phoneCam;
 
     AprilTagLocation getLastPosition = AprilTagLocation.UNKNOWN;
-    started = false
+    boolean started = false;
 
     @Override
     public void runOpMode() {
@@ -126,24 +126,24 @@ public class AutonomousBlueStorage extends LinearOpMode {
         // Benefit of using if, else-if, else, is because if eocv doesn't detect anything at all,
         // the robot will still deliver pre-box on top level. 
        if (getLastPosition == AprilTagLocation.LEFT) {
-            started = true
+            started = true;
             drive.followTrajectorySequence(level1);
             telemetry.addData("Going to Level 1");
             telemetry.update();
         } else if (getLastPosition == AprilTagLocation.MIDDLE) {
-            started = true
+            started = true;
             drive.followTrajectorySequence(level2);
             telemetry.addData("Going to Level 2");
             telemetry.update();
         } else if (getLastPosition == AprilTagLocation.RIGHT){
-            started = true
+            started = true;
             drive.followTrajectorySequence(level3);
             telemetry.addData("Going to Level 3");
             telemetry.update();
         }
         else {
             drive.followTrajectorySequence(level3);
-            started = true
+            started = true;
             telemetry.addData("Failed to detect: Go --> Level3 ");
             telemetry.update();
         }
