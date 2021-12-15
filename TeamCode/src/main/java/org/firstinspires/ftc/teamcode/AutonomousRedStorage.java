@@ -6,7 +6,6 @@
 
 package org.firstinspires.ftc.teamcode;
 
-
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 
@@ -34,15 +33,18 @@ public class AutonomousRedStorage extends LinearOpMode {
 
     OpenCvCamera phoneCam;
 
-    AprilTagLocation getLastPosition = AprilTagLocation.UNKNOWN;
+    MarkerDetectionPipeline pipeline;
+
+    boolean started = false;
 
     @Override
     public void runOpMode() {
-        //EOCV
+        pipeline = new MarkerDetectionPipeline();
+
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         phoneCam = OpenCvCameraFactory.getInstance().createInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId);
 
-        phoneCam.setPipeline(new MarkerDetectionPipeline());
+        phoneCam.setPipeline(pipeline);
 
         phoneCam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
@@ -71,37 +73,41 @@ public class AutonomousRedStorage extends LinearOpMode {
 
         //Still working on the trajectories, not final
         //Road Runner Trajectory
+
+        /*
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
 
-        Pose2d startPose = new Pose2d(-35,63.25, Math.toRadians(270));
+        Pose2d startPose = new Pose2d(-35, -63.25, Math.toRadians(90));;
         drive.setPoseEstimate(startPose);
 
         TrajectorySequence level1 = drive.trajectorySequenceBuilder(startPose)
-                .splineTo(new Vector2d(-21, 37), Math.toRadians(-50))
+                .splineTo(new Vector2d(-21, -37), Math.toRadians(50))
                 .back(20)
-                .turn(Math.toRadians(-130))
-                .splineToLinearHeading(new Pose2d(-52.25, 63.25, Math.toRadians(180)), Math.toRadians(90))
-                .strafeLeft(28.65)
+                .turn(Math.toRadians(130))
+                .splineToLinearHeading(new Pose2d(-52.25, -63.25, Math.toRadians(180)), Math.toRadians(-90))
+                .strafeRight(28.65)
                 .forward(5)
                 .build();
 
         TrajectorySequence level2 = drive.trajectorySequenceBuilder(startPose)
-                .splineTo(new Vector2d(-21, 37), Math.toRadians(-50))
+                .splineTo(new Vector2d(-21, -37), Math.toRadians(50))
                 .back(20)
-                .turn(Math.toRadians(-130))
-                .splineToLinearHeading(new Pose2d(-52.25, 63.25, Math.toRadians(180)), Math.toRadians(90))
-                .strafeLeft(28.65)
+                .turn(Math.toRadians(130))
+                .splineToLinearHeading(new Pose2d(-52.25, -63.25, Math.toRadians(180)), Math.toRadians(-90))
+                .strafeRight(28.65)
                 .forward(5)
                 .build();
 
         TrajectorySequence level3 = drive.trajectorySequenceBuilder(startPose)
-                .splineTo(new Vector2d(-21, 37), Math.toRadians(-50))
+                .splineTo(new Vector2d(-21, -37), Math.toRadians(50))
                 .back(20)
-                .turn(Math.toRadians(-130))
-                .splineToLinearHeading(new Pose2d(-52.25, 63.25, Math.toRadians(180)), Math.toRadians(90))
-                .strafeLeft(28.65)
+                .turn(Math.toRadians(130))
+                .splineToLinearHeading(new Pose2d(-52.25, -63.25, Math.toRadians(180)), Math.toRadians(-90))
+                .strafeRight(28.65)
                 .forward(5)
                 .build();
+        */
+
 
 
 
@@ -116,72 +122,49 @@ public class AutonomousRedStorage extends LinearOpMode {
 
         if (isStopRequested()) return;
 
-        //drive.followTrajectorySequence(level1);
+
+        AprilTagLocation position = pipeline.getLastPosition();
 
 
-        // Continue Auto here with roadrunner
-        // Need to figure out how to determine location of duck and use the if statement
+        if (position == AprilTagLocation.LEFT) {
+            started = true;
+            telemetry.addData("","Going to Level 1");
+            telemetry.update();
+            //drive.followTrajectorySequence(level1);
 
-        //  Should I use the one above? or the if, else-if, else
-        // Benefit of using the one below is that if tfod doesn't detect anything at all,
-        // the robot will still deliver pre-box on top level.
-        if (getLastPosition == AprilTagLocation.LEFT) {
-            drive.followTrajectorySequence(level1);
-        } else if (getLastPosition == AprilTagLocation.MIDDLE) {
-            drive.followTrajectorySequence(level2);
-        } else if (getLastPosition == AprilTagLocation.RIGHT){
-            drive.followTrajectorySequence(level3);
+
+        } else if (position == AprilTagLocation.MIDDLE) {
+            started = true;
+            telemetry.addData("","Going to Level 2");
+            telemetry.update();
+            //drive.followTrajectorySequence(level2);
+
+
+        } else if (position == AprilTagLocation.RIGHT) {
+            started = true;
+            telemetry.addData("","Going to Level 3");
+            telemetry.update();
+            //drive.followTrajectorySequence(level3);
+
+
         }
         else {
-            drive.followTrajectorySequence(level3);
-        }
-        while (opModeIsActive()) {
-            /*
-             * Send some stats to the telemetry
-             */
-            telemetry.addData("Frame Count", phoneCam.getFrameCount());
-            telemetry.addData("FPS", String.format("%.2f", phoneCam.getFps()));
-            telemetry.addData("Total frame time ms", phoneCam.getTotalFrameTimeMs());
-            telemetry.addData("Pipeline time ms", phoneCam.getPipelineTimeMs());
-            telemetry.addData("Overhead time ms", phoneCam.getOverheadTimeMs());
-            telemetry.addData("Theoretical max FPS", phoneCam.getCurrentPipelineMaxFps());
+            started = true;
+            telemetry.addData("","Failed to detect");
             telemetry.update();
+            //drive.followTrajectorySequence(level3);
 
-            /*
-             * NOTE: stopping the stream from the camera early (before the end of the OpMode
-             * when it will be automatically stopped for you) *IS* supported. The "if" statement
-             * below will stop streaming from the camera when the "A" button on gamepad 1 is pressed.
-             */
-            if (gamepad1.a) {
-                /*
-                 * IMPORTANT NOTE: calling stopStreaming() will indeed stop the stream of images
-                 * from the camera (and, by extension, stop calling your vision pipeline). HOWEVER,
-                 * if the reason you wish to stop the stream early is to switch use of the camera
-                 * over to, say, Vuforia or TFOD, you will also need to call closeCameraDevice()
-                 * (commented out below), because according to the Android Camera API documentation:
-                 *         "Your application should only have one Camera object active at a time for
-                 *          a particular hardware camera."
-                 *
-                 * NB: calling closeCameraDevice() will internally call stopStreaming() if applicable,
-                 * but it doesn't hurt to call it anyway, if for no other reason than clarity.
-                 *
-                 * NB2: if you are stopping the camera stream to simply save some processing power
-                 * (or battery power) for a short while when you do not need your vision pipeline,
-                 * it is recommended to NOT call closeCameraDevice() as you will then need to re-open
-                 * it the next time you wish to activate your vision pipeline, which can take a bit of
-                 * time. Of course, this comment is irrelevant in light of the use case described in
-                 * the above "important note".
-                 */
+
+        }
+
+        while (opModeIsActive()) {
+
+            if (started = true) {
+
                 phoneCam.stopStreaming();
-                //phoneCam.closeCameraDevice();
+
             }
 
-            /*
-             * For the purposes of this sample, throttle ourselves to 10Hz loop to avoid burning
-             * excess CPU cycles for no reason. (By default, telemetry is only sent to the DS at 4Hz
-             * anyway). Of course in a real OpMode you will likely not want to do this.
-             */
-            sleep(100);
         }
     }
 }
