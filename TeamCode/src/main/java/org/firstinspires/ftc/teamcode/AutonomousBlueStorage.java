@@ -1,7 +1,7 @@
 // Autonomous Period
-// Starting at Blue wall | Storage side 
+// Starting at Blue wall | Storage side
 // Scoring pre-loaded box
-// Going to Carousel and delivering duck onto ground 
+// Going to Carousel and delivering duck onto ground
 // Parking completely in storage
 
 package org.firstinspires.ftc.teamcode;
@@ -33,16 +33,18 @@ public class AutonomousBlueStorage extends LinearOpMode {
 
     OpenCvCamera phoneCam;
 
-    AprilTagLocation getLastPosition = AprilTagLocation.UNKNOWN;
+    MarkerDetectionPipeline pipeline;
+
     boolean started = false;
 
     @Override
     public void runOpMode() {
-        //EOCV
+        pipeline = new MarkerDetectionPipeline();
+
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         phoneCam = OpenCvCameraFactory.getInstance().createInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId);
 
-        phoneCam.setPipeline(new MarkerDetectionPipeline());
+        phoneCam.setPipeline(pipeline);
 
         phoneCam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
@@ -58,8 +60,7 @@ public class AutonomousBlueStorage extends LinearOpMode {
                  * For a rear facing camera or a webcam, rotation is defined assuming the camera is facing
                  * away from the user.
                  */
-                //phoneCam.startStreaming(640, 480, OpenCvCameraRotation.SIDEWAYS_RIGHT);
-                phoneCam.startStreaming(640, 480, OpenCvCameraRotation.UPRIGHT);
+                phoneCam.startStreaming(640, 480, OpenCvCameraRotation.SIDEWAYS_LEFT);
             }
 
             @Override
@@ -72,6 +73,8 @@ public class AutonomousBlueStorage extends LinearOpMode {
 
         //Still working on the trajectories, not final
         //Road Runner Trajectory
+
+        /*
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
 
         Pose2d startPose = new Pose2d(-35, 63.25, Math.toRadians(270));
@@ -103,6 +106,8 @@ public class AutonomousBlueStorage extends LinearOpMode {
                 .strafeRight(28.65)
                 .forward(5)
                 .build();
+        */
+
 
 
 
@@ -117,35 +122,29 @@ public class AutonomousBlueStorage extends LinearOpMode {
 
         if (isStopRequested()) return;
 
-        //drive.followTrajectorySequence(level1);
+
+        AprilTagLocation position = pipeline.getLastPosition();
 
 
-        // Continue Auto here with roadrunner
-        // Need to figure out how to determine location of duck and use the if statement
-
-        
-        // Benefit of using if, else-if, else, is because if eocv doesn't detect anything at all,
-        // the robot will still deliver pre-box on top level. 
-       if (getLastPosition == AprilTagLocation.LEFT) {
+        if (position == AprilTagLocation.LEFT) {
             started = true;
-            drive.followTrajectorySequence(level1);
-            telemetry.addData("Going to Level 1");
+            //drive.followTrajectorySequence(level1);
+            telemetry.addData("","Going to Level 1");
             telemetry.update();
-        } else if (getLastPosition == AprilTagLocation.MIDDLE) {
+        } else if (position == AprilTagLocation.MIDDLE) {
             started = true;
-            drive.followTrajectorySequence(level2);
-            telemetry.addData("Going to Level 2");
+            //drive.followTrajectorySequence(level2);
+            telemetry.addData("","Going to Level 2");
             telemetry.update();
-        } else if (getLastPosition == AprilTagLocation.RIGHT){
+        } else if (position == AprilTagLocation.RIGHT) {
             started = true;
-            drive.followTrajectorySequence(level3);
-            telemetry.addData("Going to Level 3");
+            //drive.followTrajectorySequence(level3);
+            telemetry.addData("","Going to Level 3");
             telemetry.update();
         }
         else {
-            drive.followTrajectorySequence(level3);
-            started = true;
-            telemetry.addData("Failed to detect: Go --> Level3 ");
+            //drive.followTrajectorySequence(level3);
+            telemetry.addData("","Failed to detect");
             telemetry.update();
         }
 
@@ -166,7 +165,7 @@ public class AutonomousBlueStorage extends LinearOpMode {
              * when it will be automatically stopped for you) *IS* supported. The "if" statement
              * below will stop streaming from the camera when the "A" button on gamepad 1 is pressed.
              */
-            if (started == true) {
+            if (started = true) {
                 /*
                  * IMPORTANT NOTE: calling stopStreaming() will indeed stop the stream of images
                  * from the camera (and, by extension, stop calling your vision pipeline). HOWEVER,
@@ -199,14 +198,5 @@ public class AutonomousBlueStorage extends LinearOpMode {
         }
     }
 }
-
-
-
-
-
-
-
-
-
 
 
