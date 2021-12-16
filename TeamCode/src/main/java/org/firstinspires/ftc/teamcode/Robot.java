@@ -4,17 +4,29 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.Util;
 import org.firstinspires.ftc.teamcode.subsystems.Intake;
+import org.firstinspires.ftc.teamcode.subsystems.Bucket;
 
 
 @TeleOp(name = "Comp TeleOp", group = "TeleOp")
 public class Robot extends LinearOpMode {
     //Intake
     DcMotor intakeMotor;
-    Intake intake;
+    Intake intakewheel;
+
+    //Intake Servo
+    Servo intakeServo1;
+    Servo intakeServo2;
 
 
+    //Bucket Servo
+    CRServo bucketServo;
+    Bucket bucket;
+
+    //Drive
     DcMotor frontLeft;
     DcMotor frontRight;
     DcMotor backLeft;
@@ -31,12 +43,15 @@ public class Robot extends LinearOpMode {
 
         //Intake
         intakeMotor = hardwareMap.dcMotor.get("intakeMotor");
-        intake = new Intake(intakeMotor);
+        intakewheel = new Intake(intakeMotor);
 
+        //Intake Servos
+        intakeServo1 = hardwareMap.servo.get("intakeServo1");
+        intakeServo2 = hardwareMap.servo.get("intakeServo2");
 
-
-
-
+        //Bucket Servo
+        bucketServo = hardwareMap.crservo.get("bucket");
+        bucket = new Bucket(bucketServo);
 
         // If bot spins when going forward, uncomment the stuff below
         // either left or right
@@ -67,24 +82,51 @@ public class Robot extends LinearOpMode {
             frontRight.setPower(frontRightPower);
             backRight.setPower(backRightPower);
 
+            //Will switch to trigger
             //Intake
-            if (gamepad1.left_bumper){
-                intake.In();
-            }else {
-                intake.Off();
+            if (gamepad1.left_bumper) {
+                intakewheel.In();
+            } else {
+                intakewheel.Off();
             }
 
-            if (gamepad1.right_bumper){
-                intake.Out();
-            }else {
-                intake.Off();
+            if (gamepad1.right_bumper) {
+                intakewheel.Out();
+            } else {
+                intakewheel.Off();
 
             }
 
             //Intake Arm Servos
+            //Needs to increase each time, fix later
+            if (gamepad1.right_bumper) {
+                intakeServo1.setPosition(0.05);
+                intakeServo2.setPosition(0.05);
 
+            }
+            if (gamepad1.left_bumper) {
+                intakeServo1.setPosition(-0.05);
+                intakeServo2.setPosition(-0.05);
+
+            }
+
+
+            //Arm Motors
+
+
+            //Arm Servo
+
+            //Bucket Servo
+            if (gamepad2.right_bumper) {
+                bucket.Drop();
+            }
+
+            if (gamepad2.left_bumper) {
+                bucket.Return();
+            }
 
         }
         idle();
     }
 }
+
