@@ -21,6 +21,10 @@ public class Robot extends LinearOpMode {
     Servo intakeServo1;
     Servo intakeServo2;
 
+    //Arm
+
+    //Arm Servo
+    Servo ArmServo;
 
     //Bucket Servo
     CRServo bucketServo;
@@ -46,18 +50,19 @@ public class Robot extends LinearOpMode {
         intakewheel = new Intake(intakeMotor);
 
         //Intake Servos
-        intakeServo1 = hardwareMap.servo.get("intakeServo1");
-        intakeServo2 = hardwareMap.servo.get("intakeServo2");
+        intakeServo1 = hardwareMap.servo.get("NormalServo");
+        intakeServo2 = hardwareMap.servo.get("ReversedServo");
 
         //Bucket Servo
         bucketServo = hardwareMap.crservo.get("bucket");
         bucket = new Bucket(bucketServo);
 
-        // If bot spins when going forward, uncomment the stuff below
-        // either left or right
+        //Arm Servo
+        ArmServo = hardwareMap.servo.get("ArmServo");
 
-        frontRight.setDirection(DcMotor.Direction.REVERSE);
-        backRight.setDirection(DcMotor.Direction.REVERSE);
+        // either left or right
+        frontLeft.setDirection(DcMotor.Direction.REVERSE);
+        backLeft.setDirection(DcMotor.Direction.REVERSE);
 
 
         waitForStart();
@@ -66,7 +71,7 @@ public class Robot extends LinearOpMode {
 
             double y = gamepad1.left_stick_y; // Remember, this is reversed!
             double x = gamepad1.right_stick_x * 1.1; // Counteract imperfect strafing
-            double rx = gamepad1.left_stick_x;
+            double rx = -gamepad1.left_stick_x;
 
             // Denominator is the largest motor power (absolute value) or 1
             // This ensures all the powers maintain the same ratio, but only when
@@ -82,15 +87,16 @@ public class Robot extends LinearOpMode {
             frontRight.setPower(frontRightPower);
             backRight.setPower(backRightPower);
 
-            //Will switch to trigger
+
+            //Switched to trigger
             //Intake
-            if (gamepad1.left_bumper) {
+            if (gamepad1.left_trigger >= 0.5) {
                 intakewheel.In();
             } else {
                 intakewheel.Off();
             }
 
-            if (gamepad1.right_bumper) {
+            if (gamepad1.right_trigger >= 0.5) {
                 intakewheel.Out();
             } else {
                 intakewheel.Off();
@@ -98,15 +104,14 @@ public class Robot extends LinearOpMode {
             }
 
             //Intake Arm Servos
-            //Needs to increase each time, fix later
+            //Needs to increase each time by 0.05
             if (gamepad1.right_bumper) {
-                intakeServo1.setPosition(0.05);
-                intakeServo2.setPosition(0.05);
-
+                intakeServo1.setPosition(intakeServo1.getPosition()+0.05);
+                intakeServo2.setPosition(intakeServo1.getPosition()-0.05);
             }
             if (gamepad1.left_bumper) {
-                intakeServo1.setPosition(-0.05);
-                intakeServo2.setPosition(-0.05);
+                intakeServo1.setPosition(intakeServo1.getPosition()-0.05);
+                intakeServo2.setPosition(intakeServo1.getPosition()+0.05);
 
             }
 
@@ -116,11 +121,12 @@ public class Robot extends LinearOpMode {
 
             //Arm Servo
 
+
+
             //Bucket Servo
             if (gamepad2.right_bumper) {
                 bucket.Drop();
             }
-
             if (gamepad2.left_bumper) {
                 bucket.Return();
             }
