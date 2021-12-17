@@ -4,17 +4,33 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.Util;
 import org.firstinspires.ftc.teamcode.subsystems.Intake;
+import org.firstinspires.ftc.teamcode.subsystems.Bucket;
 
 
 @TeleOp(name = "Comp TeleOp", group = "TeleOp")
 public class Robot extends LinearOpMode {
     //Intake
     DcMotor intakeMotor;
-    Intake intake;
+    Intake intakewheel;
 
+    //Intake Servo
+    Servo intakeServo1;
+    Servo intakeServo2;
 
+    //Arm
+
+    //Arm Servo
+    Servo ArmServo;
+
+    //Bucket Servo
+    CRServo bucketServo;
+    Bucket bucket;
+
+    //Drive
     DcMotor frontLeft;
     DcMotor frontRight;
     DcMotor backLeft;
@@ -31,18 +47,22 @@ public class Robot extends LinearOpMode {
 
         //Intake
         intakeMotor = hardwareMap.dcMotor.get("intakeMotor");
-        intake = new Intake(intakeMotor);
+        intakewheel = new Intake(intakeMotor);
 
+        //Intake Servos
+        intakeServo1 = hardwareMap.servo.get("NormalServo");
+        intakeServo2 = hardwareMap.servo.get("ReversedServo");
 
+        //Bucket Servo
+        bucketServo = hardwareMap.crservo.get("bucket");
+        bucket = new Bucket(bucketServo);
 
+        //Arm Servo
+        ArmServo = hardwareMap.servo.get("ArmServo");
 
-
-
-        // If bot spins when going forward, uncomment the stuff below
         // either left or right
-
-        frontRight.setDirection(DcMotor.Direction.REVERSE);
-        backRight.setDirection(DcMotor.Direction.REVERSE);
+        frontLeft.setDirection(DcMotor.Direction.REVERSE);
+        backLeft.setDirection(DcMotor.Direction.REVERSE);
 
 
         waitForStart();
@@ -51,7 +71,7 @@ public class Robot extends LinearOpMode {
 
             double y = gamepad1.left_stick_y; // Remember, this is reversed!
             double x = gamepad1.right_stick_x * 1.1; // Counteract imperfect strafing
-            double rx = gamepad1.left_stick_x;
+            double rx = -gamepad1.left_stick_x;
 
             // Denominator is the largest motor power (absolute value) or 1
             // This ensures all the powers maintain the same ratio, but only when
@@ -67,24 +87,52 @@ public class Robot extends LinearOpMode {
             frontRight.setPower(frontRightPower);
             backRight.setPower(backRightPower);
 
+
+            //Switched to trigger
             //Intake
-            if (gamepad1.left_bumper){
-                intake.In();
-            }else {
-                intake.Off();
+            if (gamepad1.left_trigger >= 0.5) {
+                intakewheel.In();
+            } else {
+                intakewheel.Off();
             }
 
-            if (gamepad1.right_bumper){
-                intake.Out();
-            }else {
-                intake.Off();
+            if (gamepad1.right_trigger >= 0.5) {
+                intakewheel.Out();
+            } else {
+                intakewheel.Off();
 
             }
 
             //Intake Arm Servos
+            //Needs to increase each time by 0.05
+            if (gamepad1.right_bumper) {
+                intakeServo1.setPosition(intakeServo1.getPosition()+0.05);
+                intakeServo2.setPosition(intakeServo1.getPosition()-0.05);
+            }
+            if (gamepad1.left_bumper) {
+                intakeServo1.setPosition(intakeServo1.getPosition()-0.05);
+                intakeServo2.setPosition(intakeServo1.getPosition()+0.05);
 
+            }
+
+
+            //Arm Motors
+
+
+            //Arm Servo
+
+
+
+            //Bucket Servo
+            if (gamepad2.right_bumper) {
+                bucket.Drop();
+            }
+            if (gamepad2.left_bumper) {
+                bucket.Return();
+            }
 
         }
         idle();
     }
 }
+
