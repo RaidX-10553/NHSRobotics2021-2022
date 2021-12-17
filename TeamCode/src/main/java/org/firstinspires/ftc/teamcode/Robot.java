@@ -9,6 +9,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Util;
 import org.firstinspires.ftc.teamcode.subsystems.Intake;
 import org.firstinspires.ftc.teamcode.subsystems.Bucket;
+import org.firstinspires.ftc.teamcode.subsystems.Duck;
+
 
 
 @TeleOp(name = "Comp TeleOp", group = "TeleOp")
@@ -22,6 +24,8 @@ public class Robot extends LinearOpMode {
     Servo intakeServo2;
 
     //Arm
+    DcMotor longArm;
+    DcMotor smallArm;
 
     //Arm Servo
     Servo ArmServo;
@@ -35,6 +39,10 @@ public class Robot extends LinearOpMode {
     DcMotor frontRight;
     DcMotor backLeft;
     DcMotor backRight;
+
+    //Duck Spin
+    DcMotor duckMotor;
+    Duck duckSpin;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -59,6 +67,14 @@ public class Robot extends LinearOpMode {
 
         //Arm Servo
         ArmServo = hardwareMap.servo.get("ArmServo");
+
+        //Arm Motors
+        longArm = hardwareMap.dcMotor.get("ArmMotor");
+        smallArm = hardwareMap.dcMotor.get("smallArmMotor");
+
+        //Duck Spin
+        duckMotor = hardwareMap.dcMotor.get("duckMotor");
+        duckSpin = new Duck(duckMotor);
 
         // either left or right
         frontLeft.setDirection(DcMotor.Direction.REVERSE);
@@ -88,8 +104,8 @@ public class Robot extends LinearOpMode {
             backRight.setPower(backRightPower);
 
 
-            //Switched to trigger
-            //Intake
+
+            //Intake motor
             if (gamepad1.left_trigger >= 0.5) {
                 intakewheel.In();
             } else {
@@ -102,6 +118,8 @@ public class Robot extends LinearOpMode {
                 intakewheel.Off();
 
             }
+
+
 
             //Intake Arm Servos
             //Needs to increase each time by 0.05
@@ -117,10 +135,23 @@ public class Robot extends LinearOpMode {
 
 
             //Arm Motors
+            double arm = gamepad2.left_stick_y;
+                longArm.setPower(arm);
+
+            double smolarm = gamepad2.right_stick_y;
+                longArm.setPower(smolarm);
+
 
 
             //Arm Servo
+            if (gamepad2.right_trigger > 0.5) {
+                ArmServo.setPosition(ArmServo.getPosition()+0.02);
+            }
+            if (gamepad2.left_trigger > 0.5) {
+                ArmServo.setPosition(ArmServo.getPosition()-0.02);
 
+
+            }
 
 
             //Bucket Servo
@@ -129,6 +160,15 @@ public class Robot extends LinearOpMode {
             }
             if (gamepad2.left_bumper) {
                 bucket.Return();
+            }
+
+
+
+            //DUCK SPIN
+            if (gamepad2.a) {
+                duckSpin.Spin();
+            } else{
+                duckSpin.DontSpin();
             }
 
         }
