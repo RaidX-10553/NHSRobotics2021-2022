@@ -140,7 +140,7 @@ public class Robot extends LinearOpMode {
                 longArm.setPower(arm);
 
             double smolarm = gamepad2.right_stick_y;
-                longArm.setPower(smolarm);
+                smallArm.setPower(smolarm);
 
             */
 
