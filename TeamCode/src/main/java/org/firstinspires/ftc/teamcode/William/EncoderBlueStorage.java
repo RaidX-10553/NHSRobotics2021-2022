@@ -8,6 +8,7 @@ package org.firstinspires.ftc.teamcode.William;
 
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -24,7 +25,7 @@ import org.openftc.easyopencv.OpenCvInternalCamera;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
-
+@Disabled
 @Autonomous(name="EncoderBlueStorage", group="Autonomous")
 public class EncoderBlueStorage extends LinearOpMode {
     //encoder variable declaration
@@ -64,8 +65,8 @@ public class EncoderBlueStorage extends LinearOpMode {
 
         //left motor is reversed so drive wheels don't spin in opposite directions
         //since the left drive train is opposite
-        frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
-        backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+        frontRight.setDirection(DcMotorSimple.Direction.REVERSE);
+        backRight.setDirection(DcMotorSimple.Direction.REVERSE);
 
 
         frontLeftEncoderPosition = 0;
@@ -94,7 +95,7 @@ public class EncoderBlueStorage extends LinearOpMode {
                  * For a rear facing camera or a webcam, rotation is defined assuming the camera is facing
                  * away from the user.
                  */
-                phoneCam.startStreaming(640, 480, OpenCvCameraRotation.SIDEWAYS_LEFT);
+                phoneCam.startStreaming(640, 480, OpenCvCameraRotation.SIDEWAYS_RIGHT);
             }
 
             @Override

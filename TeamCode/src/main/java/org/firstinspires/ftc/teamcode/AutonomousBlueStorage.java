@@ -10,6 +10,7 @@ import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
@@ -74,7 +75,7 @@ public class AutonomousBlueStorage extends LinearOpMode {
         //Still working on the trajectories, not final
         //Road Runner Trajectory
 
-        /*
+
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
 
         Pose2d startPose = new Pose2d(-35, 63.25, Math.toRadians(270));
@@ -106,7 +107,7 @@ public class AutonomousBlueStorage extends LinearOpMode {
                 .strafeRight(28.65)
                 .forward(5)
                 .build();
-        */
+
 
 
 
@@ -130,21 +131,21 @@ public class AutonomousBlueStorage extends LinearOpMode {
             started = true;
             telemetry.addData("","Going to Level 1");
             telemetry.update();
-            //drive.followTrajectorySequence(level1);
+            drive.followTrajectorySequence(level1);
 
 
         } else if (position == AprilTagLocation.MIDDLE) {
             started = true;
             telemetry.addData("","Going to Level 2");
             telemetry.update();
-            //drive.followTrajectorySequence(level2);
+            drive.followTrajectorySequence(level2);
 
 
         } else if (position == AprilTagLocation.RIGHT) {
             started = true;
             telemetry.addData("","Going to Level 3");
             telemetry.update();
-            //drive.followTrajectorySequence(level3);
+            drive.followTrajectorySequence(level3);
 
 
         }
@@ -152,7 +153,7 @@ public class AutonomousBlueStorage extends LinearOpMode {
             started = true;
             telemetry.addData("","Failed to detect");
             telemetry.update();
-            //drive.followTrajectorySequence(level3);
+            drive.followTrajectorySequence(level3);
 
 
         }

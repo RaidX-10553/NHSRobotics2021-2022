@@ -20,19 +20,19 @@ public class Robot extends LinearOpMode {
     Intake intakewheel;
 
     //Intake Servo
-    Servo intakeServo1;
-    Servo intakeServo2;
+    CRServo intakeServo1;
+    CRServo intakeServo2;
 
     //Arm
-    DcMotor longArm;
-    DcMotor smallArm;
+    //DcMotor longArm;
+    //DcMotor smallArm;
 
     //Arm Servo
-    Servo ArmServo;
+    CRServo ArmServo;
 
     //Bucket Servo
-    CRServo bucketServo;
-    Bucket bucket;
+    //CRServo bucketServo;
+    //Bucket bucket;
 
     //Drive
     DcMotor frontLeft;
@@ -58,36 +58,36 @@ public class Robot extends LinearOpMode {
         intakewheel = new Intake(intakeMotor);
 
         //Intake Servos
-        intakeServo1 = hardwareMap.servo.get("NormalServo");
-        intakeServo2 = hardwareMap.servo.get("ReversedServo");
+        intakeServo1 = hardwareMap.crservo.get("NormalServo");
+        intakeServo2 = hardwareMap.crservo.get("ReversedServo");
 
         //Bucket Servo
-        bucketServo = hardwareMap.crservo.get("bucket");
-        bucket = new Bucket(bucketServo);
+        //bucketServo = hardwareMap.crservo.get("bucket");
+        //bucket = new Bucket(bucketServo);
 
         //Arm Servo
-        ArmServo = hardwareMap.servo.get("ArmServo");
+        ArmServo = hardwareMap.crservo.get("ArmServo");
 
         //Arm Motors
-        longArm = hardwareMap.dcMotor.get("ArmMotor");
-        smallArm = hardwareMap.dcMotor.get("smallArmMotor");
+        //longArm = hardwareMap.dcMotor.get("ArmMotor");
+        //smallArm = hardwareMap.dcMotor.get("smallArmMotor");
 
         //Duck Spin
         duckMotor = hardwareMap.dcMotor.get("duckMotor");
         duckSpin = new Duck(duckMotor);
 
         // either left or right
-        frontLeft.setDirection(DcMotor.Direction.REVERSE);
-        backLeft.setDirection(DcMotor.Direction.REVERSE);
+        frontRight.setDirection(DcMotor.Direction.REVERSE);
+        backRight.setDirection(DcMotor.Direction.REVERSE);
 
 
         waitForStart();
 
         while (opModeIsActive()) {
 
-            double y = gamepad1.left_stick_y; // Remember, this is reversed!
-            double x = gamepad1.right_stick_x * 1.1; // Counteract imperfect strafing
-            double rx = -gamepad1.left_stick_x;
+            double y = -gamepad1.left_stick_y; // Remember, this is reversed!
+            double x = gamepad1.right_stick_x; // Counteract imperfect strafing
+            double rx = gamepad1.left_stick_x;
 
             // Denominator is the largest motor power (absolute value) or 1
             // This ensures all the powers maintain the same ratio, but only when
@@ -124,15 +124,16 @@ public class Robot extends LinearOpMode {
             //Intake Arm Servos
             //Needs to increase each time by 0.05
             if (gamepad1.right_bumper) {
-                intakeServo1.setPosition(intakeServo1.getPosition()+0.05);
-                intakeServo2.setPosition(intakeServo1.getPosition()-0.05);
+                intakeServo1.setPower(0.05);
+                intakeServo2.setPower(0.05);
             }
             if (gamepad1.left_bumper) {
-                intakeServo1.setPosition(intakeServo1.getPosition()-0.05);
-                intakeServo2.setPosition(intakeServo1.getPosition()+0.05);
+                intakeServo1.setPower(-0.05);
+                intakeServo2.setPower(-0.05);
 
             }
 
+            /*
 
             //Arm Motors
             double arm = gamepad2.left_stick_y;
@@ -141,19 +142,20 @@ public class Robot extends LinearOpMode {
             double smolarm = gamepad2.right_stick_y;
                 longArm.setPower(smolarm);
 
+            */
+
+
 
 
             //Arm Servo
-            if (gamepad2.right_trigger > 0.5) {
-                ArmServo.setPosition(ArmServo.getPosition()+0.02);
-            }
-            if (gamepad2.left_trigger > 0.5) {
-                ArmServo.setPosition(ArmServo.getPosition()-0.02);
+
+            ArmServo.setPower(gamepad2.right_trigger * 0.4);
+            ArmServo.setPower(-gamepad2.left_trigger * 0.4);
 
 
-            }
 
 
+            /*
             //Bucket Servo
             if (gamepad2.right_bumper) {
                 bucket.Drop();
@@ -161,12 +163,18 @@ public class Robot extends LinearOpMode {
             if (gamepad2.left_bumper) {
                 bucket.Return();
             }
-
+            */
 
 
             //DUCK SPIN
             if (gamepad2.a) {
                 duckSpin.Spin();
+            } else{
+                duckSpin.DontSpin();
+            }
+
+            if (gamepad2.b) {
+                duckSpin.ReverseSpin();
             } else{
                 duckSpin.DontSpin();
             }
