@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Util;
+import org.firstinspires.ftc.teamcode.drive.mecanumDrive;
 import org.firstinspires.ftc.teamcode.subsystems.Intake;
 import org.firstinspires.ftc.teamcode.subsystems.Bucket;
 import org.firstinspires.ftc.teamcode.subsystems.Duck;
@@ -34,11 +35,7 @@ public class Robot extends LinearOpMode {
     //CRServo bucketServo;
     //Bucket bucket;
 
-    //Drive
-    DcMotor frontLeft;
-    DcMotor frontRight;
-    DcMotor backLeft;
-    DcMotor backRight;
+    
 
     //Duck Spin
     DcMotor duckMotor;
@@ -48,10 +45,7 @@ public class Robot extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
 
         //Drive
-        frontLeft = hardwareMap.dcMotor.get("FL");
-        frontRight = hardwareMap.dcMotor.get("FR");
-        backLeft = hardwareMap.dcMotor.get("BL");
-        backRight = hardwareMap.dcMotor.get("BR");
+        
 
         //Intake
         intakeMotor = hardwareMap.dcMotor.get("intakeMotor");
@@ -77,31 +71,17 @@ public class Robot extends LinearOpMode {
         duckSpin = new Duck(duckMotor);
 
         // either left or right
-        frontRight.setDirection(DcMotor.Direction.REVERSE);
-        backRight.setDirection(DcMotor.Direction.REVERSE);
+        
 
 
         waitForStart();
 
         while (opModeIsActive()) {
 
-            double y = -gamepad1.left_stick_y; // Remember, this is reversed!
-            double x = gamepad1.right_stick_x; // Counteract imperfect strafing
-            double rx = gamepad1.left_stick_x;
 
-            // Denominator is the largest motor power (absolute value) or 1
-            // This ensures all the powers maintain the same ratio, but only when
-            // at least one is out of the range [-1, 1]
-            double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
-            double frontLeftPower = (y + x + rx) / denominator;
-            double backLeftPower = (y - x + rx) / denominator;
-            double frontRightPower = (y - x - rx) / denominator;
-            double backRightPower = (y + x - rx) / denominator;
-
-            frontLeft.setPower(frontLeftPower);
-            backLeft.setPower(backLeftPower);
-            frontRight.setPower(frontRightPower);
-            backRight.setPower(backRightPower);
+        
+            mecanumDrive.setDrivePower(new Pose2d(-gamepad1.left_stick_y, -gamepad1.left_stick_x,-gamepad1.right_stick_x));
+            mecanumDrive.updatePoseEstimate();
 
 
 
