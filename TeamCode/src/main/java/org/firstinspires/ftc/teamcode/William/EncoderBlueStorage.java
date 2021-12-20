@@ -4,15 +4,14 @@
 // Going to Carousel and delivering duck onto ground
 // Parking completely in storage
 
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.William;
 
-import com.acmerobotics.roadrunner.geometry.Pose2d;
-import com.acmerobotics.roadrunner.geometry.Vector2d;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.teamcode.subsystems.AprilTagLocation;
 import org.firstinspires.ftc.teamcode.subsystems.MarkerDetectionPipeline;
@@ -26,9 +25,20 @@ import org.openftc.easyopencv.OpenCvInternalCamera;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
+@Disabled
+@Autonomous(name="EncoderBlueStorage", group="Autonomous")
+public class EncoderBlueStorage extends LinearOpMode {
+    //encoder variable declaration
+    private DcMotor frontLeft = null;
+    private DcMotor frontRight = null;
+    private DcMotor backLeft = null;
+    private DcMotor backRight = null;
 
-@Autonomous(name="AutoBlueStorage1", group="Autonomous")
-public class AutonomousBlueStorage extends LinearOpMode {
+    private int frontLeftEncoderPosition;
+    private int frontRightEncoderPosition;
+    private int backLeftEncoderPosition;
+    private int backRightEncoderPosition;
+    //end of encoder variable declaration
 
     /* Declare OpMode members. */
 
@@ -40,6 +50,30 @@ public class AutonomousBlueStorage extends LinearOpMode {
 
     @Override
     public void runOpMode() {
+        //initialization for encoders
+        //declare motors
+        frontLeft = hardwareMap.dcMotor.get("FL");
+        frontRight = hardwareMap.dcMotor.get("FR");
+        backLeft = hardwareMap.dcMotor.get("BL");
+        backRight = hardwareMap.dcMotor.get("BR");
+
+        //set encoder values to 0
+        frontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        frontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        backLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        backRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        //left motor is reversed so drive wheels don't spin in opposite directions
+        //since the left drive train is opposite
+        frontRight.setDirection(DcMotorSimple.Direction.REVERSE);
+        backRight.setDirection(DcMotorSimple.Direction.REVERSE);
+
+
+        frontLeftEncoderPosition = 0;
+        frontRightEncoderPosition = 0;
+        backLeftEncoderPosition = 0;
+        backRightEncoderPosition = 0;
+        //End of encoder code
         pipeline = new MarkerDetectionPipeline();
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
@@ -61,7 +95,7 @@ public class AutonomousBlueStorage extends LinearOpMode {
                  * For a rear facing camera or a webcam, rotation is defined assuming the camera is facing
                  * away from the user.
                  */
-                phoneCam.startStreaming(640, 480, OpenCvCameraRotation.SIDEWAYS_LEFT);
+                phoneCam.startStreaming(640, 480, OpenCvCameraRotation.SIDEWAYS_RIGHT);
             }
 
             @Override
@@ -74,39 +108,6 @@ public class AutonomousBlueStorage extends LinearOpMode {
 
         //Still working on the trajectories, not final
         //Road Runner Trajectory
-
-
-        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
-
-        Pose2d startPose = new Pose2d(-35, 63.25, Math.toRadians(270));
-        drive.setPoseEstimate(startPose);
-
-        TrajectorySequence level1 = drive.trajectorySequenceBuilder(startPose)
-                .splineTo(new Vector2d(-21, 37), Math.toRadians(-50))
-                .back(20)
-                .turn(Math.toRadians(-130))
-                .splineToLinearHeading(new Pose2d(-52.25, 63.25, Math.toRadians(180)), Math.toRadians(90))
-                .strafeRight(28.65)
-                .forward(5)
-                .build();
-
-        TrajectorySequence level2 = drive.trajectorySequenceBuilder(startPose)
-                .splineTo(new Vector2d(-21, 37), Math.toRadians(-50))
-                .back(20)
-                .turn(Math.toRadians(-130))
-                .splineToLinearHeading(new Pose2d(-52.25, 63.25, Math.toRadians(180)), Math.toRadians(90))
-                .strafeRight(28.65)
-                .forward(5)
-                .build();
-
-        TrajectorySequence level3 = drive.trajectorySequenceBuilder(startPose)
-                .splineTo(new Vector2d(-21, 37), Math.toRadians(-50))
-                .back(20)
-                .turn(Math.toRadians(-130))
-                .splineToLinearHeading(new Pose2d(-52.25, 63.25, Math.toRadians(180)), Math.toRadians(90))
-                .strafeRight(28.65)
-                .forward(5)
-                .build();
 
 
 
@@ -131,21 +132,20 @@ public class AutonomousBlueStorage extends LinearOpMode {
             started = true;
             telemetry.addData("","Going to Level 1");
             telemetry.update();
-            drive.followTrajectorySequence(level1);
-
+            //encoder shit here
 
         } else if (position == AprilTagLocation.MIDDLE) {
             started = true;
             telemetry.addData("","Going to Level 2");
             telemetry.update();
-            drive.followTrajectorySequence(level2);
+            //encoder shit here
 
 
         } else if (position == AprilTagLocation.RIGHT) {
             started = true;
             telemetry.addData("","Going to Level 3");
             telemetry.update();
-            drive.followTrajectorySequence(level3);
+            //encoder shit here
 
 
         }
@@ -153,7 +153,7 @@ public class AutonomousBlueStorage extends LinearOpMode {
             started = true;
             telemetry.addData("","Failed to detect");
             telemetry.update();
-            drive.followTrajectorySequence(level3);
+            //encoder shit here
 
 
         }
@@ -166,6 +166,38 @@ public class AutonomousBlueStorage extends LinearOpMode {
 
             }
 
+       }
+
+    }
+    //encoder method
+    private void drive (int leftTarget, int rightTarget, double speed){
+        frontLeftEncoderPosition += leftTarget;
+        frontRightEncoderPosition += rightTarget;
+        backLeftEncoderPosition += leftTarget;
+        backRightEncoderPosition += rightTarget;
+
+        //sets values
+        frontLeft.setTargetPosition(frontLeftEncoderPosition);
+        frontRight.setTargetPosition(frontRightEncoderPosition);
+        backLeft.setTargetPosition(backLeftEncoderPosition);
+        backRight.setTargetPosition(backRightEncoderPosition);
+
+        //actually tells the motors to run to said position
+        frontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        frontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        backLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        backRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        //runs the motors at the specified speed until they reach the target position
+        frontLeft.setPower(speed);
+        frontRight.setPower(speed);
+        backLeft.setPower(speed);
+        backRight.setPower(speed);
+
+        //stops other code from running until the target position is reached
+        while(opModeIsActive()&& frontLeft.isBusy()&& frontRight.isBusy() && backLeft.isBusy()&& backRight.isBusy())
+        {
+            idle();
         }
     }
 }
