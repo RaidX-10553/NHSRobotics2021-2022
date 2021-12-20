@@ -14,85 +14,47 @@ public class MeepMeepTesting {
 
         MeepMeep meepMeep = new MeepMeep(1080, 60);
 
-        Pose2d START_POSE = new Pose2d(-35, -61.5, Math.toRadians(90));
+        Pose2d START_POSE = new Pose2d(-35, -63.25, Math.toRadians(270));
 
+        Pose2d START_POSE2 = new Pose2d(15,-63.25, Math.toRadians(90));
         RoadRunnerBotEntity bot = new DefaultBotBuilder(meepMeep)
-                .setConstraints(30, 30, Math.toRadians(180), Math.toRadians(180), 13.5)
+                .setConstraints(30, 30, Math.toRadians(360), Math.toRadians(360), 13.5)
                 .setColorScheme(new ColorSchemeBlueDark())
                 .followTrajectorySequence(drive ->
                         drive.trajectorySequenceBuilder(START_POSE)
                                 //put ur trajectory here
                                 //for example
-                                .splineTo(new Vector2d(-23.5, -39.5), Math.toRadians(50))
-                                .back(20)
-                                .turn(Math.toRadians(130))
-                                .splineToLinearHeading(new Pose2d(-50.5, -55.78, Math.toRadians(180)), Math.toRadians(-90))
-                                .strafeRight(20.58)
-                                .forward(10)
+                                .setReversed(true)
+                                .splineTo(new Vector2d(-25.5, -40.5), Math.toRadians(45))
+                                .setReversed(false)
+                                .back(5)
+                                .strafeRight(5)
+                                .forward(15)
+                                .turn(Math.toRadians(-45))
+                                .splineToLinearHeading(new Pose2d(-52.25, -63.25, Math.toRadians(180)), Math.toRadians(-90))
+                                .strafeRight(28.65)
+                                .forward(5)
                                 .build()
                 );
-
-        Pose2d START_POSE2 = new Pose2d(-35,61.5, Math.toRadians(270));
 
         // You can add a second bot if you want.
         // You can comment this out as well if you only want one
         RoadRunnerBotEntity bot2 = new DefaultBotBuilder(meepMeep)
-                .setConstraints(30, 30, Math.toRadians(180), Math.toRadians(180), 13)
+                .setConstraints(30, 60, Math.toRadians(180), Math.toRadians(180), 13)
                 .setColorScheme(new ColorSchemeRedDark())
                 .followTrajectorySequence(drive ->
                         drive.trajectorySequenceBuilder(START_POSE2)
                                 //put ur trajectory here
                                 //for example
-                                .splineTo(new Vector2d(-23.5, 39.5), Math.toRadians(-50))
-                                .back(20)
-                                .turn(Math.toRadians(-220))
-                                .strafeLeft(20.58)
-                                .back(15)
+                                .splineTo(new Vector2d(16, -62.35), 15)
                                 .build()
                 );
-
-        Pose2d START_POSE3 = new Pose2d(11.5, -61.5, Math.toRadians(90));
-
-        RoadRunnerBotEntity bot3 = new DefaultBotBuilder(meepMeep)
-                .setConstraints(30, 30, Math.toRadians(180), Math.toRadians(180), 13.5)
-                .setColorScheme(new ColorSchemeBlueDark())
-                .followTrajectorySequence(drive ->
-                        drive.trajectorySequenceBuilder(START_POSE3)
-                                //put ur trajectory here
-                                //for example
-                                .splineTo(new Vector2d(0, -39.5), Math.toRadians(-230))
-                                .back(15)
-                                .turn(Math.toRadians(-130))
-                                .forward(30)
-                                .forward(5)
-                                .build()
-                );
-
-        Pose2d START_POSE4 = new Pose2d(11.5, 61.5, Math.toRadians(270));
-
-        RoadRunnerBotEntity bot4 = new DefaultBotBuilder(meepMeep)
-                .setConstraints(30, 30, Math.toRadians(180), Math.toRadians(180), 13.5)
-                .setColorScheme(new ColorSchemeRedDark())
-                .followTrajectorySequence(drive ->
-                        drive.trajectorySequenceBuilder(START_POSE4)
-                                //put ur trajectory here
-                                //for example
-                                .splineTo(new Vector2d(0, 39.5), Math.toRadians(230))
-                                .back(15)
-                                .turn(Math.toRadians(130))
-                                .forward(30)
-                                .forward(5)
-                                .build()
-                );
-
         meepMeep
                 .setBackground(MeepMeep.Background.FIELD_FREIGHTFRENZY_ADI_DARK)
                 .setTheme(new ColorSchemeBlueDark())
                 .setBackgroundAlpha(1f)
-                .addEntity(bot.setDimensions(14.5, 18))
-                .addEntity(bot2.setDimensions(14.5, 18)) // comment out if you are only using one bot
-                .addEntity(bot3.setDimensions(14.5, 18))
-                .addEntity(bot4.setDimensions(14.5, 18))
+                .addEntity(bot.setDimensions(13.5, 13.5))
+                .addEntity(bot2.setDimensions(13.5, 13.5)) // comment out if you are only using one bot
                 .start();
     }
 }

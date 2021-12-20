@@ -2,170 +2,129 @@
 // Starting at Red wall | Storage side 
 // Scoring pre-loaded box
 // Going to Carousel and delivering duck onto ground 
-// Parking completely in storage
+// Parking completely in warehouse
 
 package org.firstinspires.ftc.teamcode;
 
-import com.acmerobotics.roadrunner.geometry.Pose2d;
-import com.acmerobotics.roadrunner.geometry.Vector2d;
-
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
-
-import org.firstinspires.ftc.teamcode.subsystems.AprilTagLocation;
-import org.firstinspires.ftc.teamcode.subsystems.MarkerDetectionPipeline;
-
-
-import org.openftc.easyopencv.OpenCvCamera;
-import org.openftc.easyopencv.OpenCvCameraFactory;
-import org.openftc.easyopencv.OpenCvCameraRotation;
-import org.openftc.easyopencv.OpenCvInternalCamera;
-
-import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
-import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
-
+import com.qualcomm.robotcore.util.ElapsedTime;
+import java.util.List;
+import org.firstinspires.ftc.robotcore.external.ClassFactory;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection;
+import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
+import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 
 @Autonomous(name="AutoRedStorage", group="Autonomous")
 public class AutonomousRedStorage extends LinearOpMode {
 
     /* Declare OpMode members. */
 
-    OpenCvCamera phoneCam;
+    private static final String TFOD_MODEL_ASSET = "FreightFrenzy_BCDM.tflite";
+    private static final String[] LABELS = {
+      "Ball",
+      "Cube",
+      "Duck",
+      "Marker"
+    };
 
-    MarkerDetectionPipeline pipeline;
+    private static final String VUFORIA_KEY =
+            "AVgDgHH/////AAABmYSjDOxUjkoloTDlPbTfcxMdY+UnPMMGHvIoENz7ljjIJLU7u/WzCXUMDrkDD3rtaVaTTqHY2RiMeeBO0+nWwRe3aHkzxtpSa0LEdicMGhjyk0JyTKusUjg3l0kj1xYOmTidIjIlCc18/Z3FKZTBKEwZrSgakYxiot2r4zBdXcyMekArDle5NCxpDHATu261ZnwhBJc7UKazEkRCbtn9qaN0a5dB0kX3dhGxrargryTg0AuEj17NaXxy8tnq10HEXb2NiwvOJVFiw3YJhEMvyUq5bmY/c0yEchStOyy2bOswp5xtXE5+Qwy8Ty474gYH5ROWRdwrf+6mzFtS4CGdotST1dAOo3uuMgcTNvxsU4CZ";
 
-    boolean started = false;
+
+    private VuforiaLocalizer vuforia;
+
+    private TFObjectDetector tfod;
 
     @Override
     public void runOpMode() {
-        pipeline = new MarkerDetectionPipeline();
 
-        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        phoneCam = OpenCvCameraFactory.getInstance().createInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId);
+        initVuforia();
+        initTfod();
 
-        phoneCam.setPipeline(pipeline);
-
-        phoneCam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
-            @Override
-            public void onOpened() {
-                /*
-                 * Tell the camera to start streaming images to us! Note that you must make sure
-                 * the resolution you specify is supported by the camera. If it is not, an exception
-                 * will be thrown.
-                 *
-                 * Also, we specify the rotation that the camera is used in. This is so that the image
-                 * from the camera sensor can be rotated such that it is always displayed with the image upright.
-                 * For a front facing camera, rotation is defined assuming the user is looking at the screen.
-                 * For a rear facing camera or a webcam, rotation is defined assuming the camera is facing
-                 * away from the user.
-                 */
-                phoneCam.startStreaming(640, 480, OpenCvCameraRotation.SIDEWAYS_LEFT);
-            }
-
-            @Override
-            public void onError(int errorCode) {
-                /*
-                 * This will be called if the camera could not be opened
-                 */
-            }
-        });
-
-        //Still working on the trajectories, not final
-        //Road Runner Trajectory
-
-
-        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
-
-        Pose2d startPose = new Pose2d(-35, -63.25, Math.toRadians(90));;
-        drive.setPoseEstimate(startPose);
-
-        TrajectorySequence level1 = drive.trajectorySequenceBuilder(startPose)
-                .splineTo(new Vector2d(-21, -37), Math.toRadians(50))
-                .back(20)
-                .turn(Math.toRadians(130))
-                .splineToLinearHeading(new Pose2d(-52.25, -63.25, Math.toRadians(180)), Math.toRadians(-90))
-                .strafeRight(28.65)
-                .forward(5)
-                .build();
-
-        TrajectorySequence level2 = drive.trajectorySequenceBuilder(startPose)
-                .splineTo(new Vector2d(-21, -37), Math.toRadians(50))
-                .back(20)
-                .turn(Math.toRadians(130))
-                .splineToLinearHeading(new Pose2d(-52.25, -63.25, Math.toRadians(180)), Math.toRadians(-90))
-                .strafeRight(28.65)
-                .forward(5)
-                .build();
-
-        TrajectorySequence level3 = drive.trajectorySequenceBuilder(startPose)
-                .splineTo(new Vector2d(-21, -37), Math.toRadians(50))
-                .back(20)
-                .turn(Math.toRadians(130))
-                .splineToLinearHeading(new Pose2d(-52.25, -63.25, Math.toRadians(180)), Math.toRadians(-90))
-                .strafeRight(28.65)
-                .forward(5)
-                .build();
-
-
-
-
+        if (tfod != null) {
+            tfod.activate();
+            tfod.setZoom(2.5, 16.0/9.0);
+        }
 
         /** Wait for the game to begin */
         telemetry.addData(">", "Press Play to start Autonomous");
         telemetry.update();
-
+        
 
         // Wait for the game to start (driver presses PLAY)
-
         waitForStart();
 
-        if (isStopRequested()) return;
+        
+        if (opModeIsActive()) {
+            while (opModeIsActive()) {
+                if (tfod != null) {
+                    // getUpdatedRecognitions() will return null if no new information is available since
+                    // the last time that call was made.
+                    List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
+                    if (updatedRecognitions != null) {
+                      telemetry.addData("# Object Detected", updatedRecognitions.size());
 
-
-        AprilTagLocation position = pipeline.getLastPosition();
-
-
-        if (position == AprilTagLocation.LEFT) {
-            started = true;
-            telemetry.addData("","Going to Level 1");
-            telemetry.update();
-            drive.followTrajectorySequence(level1);
-
-
-        } else if (position == AprilTagLocation.MIDDLE) {
-            started = true;
-            telemetry.addData("","Going to Level 2");
-            telemetry.update();
-            drive.followTrajectorySequence(level2);
-
-
-        } else if (position == AprilTagLocation.RIGHT) {
-            started = true;
-            telemetry.addData("","Going to Level 3");
-            telemetry.update();
-            drive.followTrajectorySequence(level3);
-
-
-        }
-        else {
-            started = true;
-            telemetry.addData("","Failed to detect");
-            telemetry.update();
-            drive.followTrajectorySequence(level3);
-
-
-        }
-
-        while (opModeIsActive()) {
-
-            if (started = true) {
-
-                phoneCam.stopStreaming();
-
+                      // step through the list of recognitions and display boundary info.
+                      int i = 0;
+                      boolean isDuckDetected = false;  
+                      for (Recognition recognition : updatedRecognitions) {
+                        telemetry.addData(String.format("label (%d)", i), recognition.getLabel());
+                        telemetry.addData(String.format("  left,top (%d)", i), "%.03f , %.03f",
+                                          recognition.getLeft(), recognition.getTop());
+                        telemetry.addData(String.format("  right,bottom (%d)", i), "%.03f , %.03f",
+                                recognition.getRight(), recognition.getBottom());
+                        i++;
+                        
+                         // check label to see if the camera now sees a Ball         ** ADDED **
+                        if (recognition.getLabel().equals("Duck")) {            //  ** ADDED **
+                             isDuckDetected = true;                             //  ** ADDED **
+                             telemetry.addData("Object Detected", "Duck");      //  ** ADDED **
+                         } else {                                               //  ** ADDED **
+                             isDuckDetected = false;   
+                             telemetry.addData("Object Not Detected", "Duck");   //  ** ADDED **
+                         }                                                      //  ** ADDED **
+                      }
+                      telemetry.update();
+                    }
+                }
             }
-
         }
+        
+
+        // Continue Auto here with roadrunner
+
+
+    }
+     * Initialize the Vuforia localization engine.
+     */
+    private void initVuforia() {
+        /*
+         * Configure Vuforia by creating a Parameter object, and passing it to the Vuforia engine.
+         */
+        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
+
+        parameters.vuforiaLicenseKey = VUFORIA_KEY;
+        parameters.cameraDirection = CameraDirection.BACK;
+
+        //  Instantiate the Vuforia engine
+        vuforia = ClassFactory.getInstance().createVuforia(parameters);
+
+        // Loading trackables is not necessary for the TensorFlow Object Detection engine.
+    }
+
+    /**
+     * Initialize the TensorFlow Object Detection engine.
+     */
+    private void initTfod() {
+        int tfodMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
+            "tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
+        tfodParameters.minResultConfidence = 0.5f;
+        tfodParameters.isModelTensorFlow2 = true;
+        tfodParameters.inputSize = 320;
+        tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
+        tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABELS);
     }
 }
