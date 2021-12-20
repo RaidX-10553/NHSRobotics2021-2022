@@ -19,7 +19,7 @@ public class Duck {
         this.duckMotor.setPower(1);
     }
     public void ReverseSpin() {
-        this.duckMotor.setPower(1);
+        this.duckMotor.setPower(-1);
     }
 
     public void DontSpin() {

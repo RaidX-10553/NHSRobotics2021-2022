@@ -3,11 +3,12 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Util;
-import org.firstinspires.ftc.teamcode.drive.mecanumDrive;
+import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.subsystems.Intake;
 import org.firstinspires.ftc.teamcode.subsystems.Bucket;
 import org.firstinspires.ftc.teamcode.subsystems.Duck;
@@ -35,17 +36,20 @@ public class Robot extends LinearOpMode {
     //CRServo bucketServo;
     //Bucket bucket;
 
+    //Drive
     
 
     //Duck Spin
     DcMotor duckMotor;
     Duck duckSpin;
 
+
     @Override
     public void runOpMode() throws InterruptedException {
 
         //Drive
-        
+        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
+        drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         //Intake
         intakeMotor = hardwareMap.dcMotor.get("intakeMotor");
@@ -79,9 +83,14 @@ public class Robot extends LinearOpMode {
         while (opModeIsActive()) {
 
 
-        
-            mecanumDrive.setDrivePower(new Pose2d(-gamepad1.left_stick_y, -gamepad1.left_stick_x,-gamepad1.right_stick_x));
-            mecanumDrive.updatePoseEstimate();
+            drive.setWeightedDrivePower(
+                    new Pose2d(
+                            -gamepad1.left_stick_y,
+                            -gamepad1.left_stick_x,
+                            -gamepad1.right_stick_x
+                    )
+            );
+            drive.update();
 
 
 

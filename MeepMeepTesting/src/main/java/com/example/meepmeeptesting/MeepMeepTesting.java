@@ -12,23 +12,20 @@ public class MeepMeepTesting {
 
     public static void main(String[] args) {
 
-        MeepMeep meepMeep = new MeepMeep(1080, 60);
+        MeepMeep meepMeep = new MeepMeep(800, 60);
 
         Pose2d START_POSE = new Pose2d(-35, -61.5, Math.toRadians(90));
 
         RoadRunnerBotEntity bot = new DefaultBotBuilder(meepMeep)
                 .setConstraints(30, 30, Math.toRadians(180), Math.toRadians(180), 13.5)
-                .setColorScheme(new ColorSchemeBlueDark())
+                .setColorScheme(new ColorSchemeRedDark())
                 .followTrajectorySequence(drive ->
                         drive.trajectorySequenceBuilder(START_POSE)
                                 //put ur trajectory here
                                 //for example
-                                .splineTo(new Vector2d(-23.5, -39.5), Math.toRadians(50))
-                                .back(20)
-                                .turn(Math.toRadians(130))
-                                .splineToLinearHeading(new Pose2d(-50.5, -55.78, Math.toRadians(180)), Math.toRadians(-90))
-                                .strafeRight(20.58)
-                                .forward(10)
+                                .forward(26.5)
+                                .turn(Math.toRadians(90))
+                                .forward(23.5)
                                 .build()
                 );
 
@@ -38,16 +35,14 @@ public class MeepMeepTesting {
         // You can comment this out as well if you only want one
         RoadRunnerBotEntity bot2 = new DefaultBotBuilder(meepMeep)
                 .setConstraints(30, 30, Math.toRadians(180), Math.toRadians(180), 13)
-                .setColorScheme(new ColorSchemeRedDark())
+                .setColorScheme(new ColorSchemeBlueDark())
                 .followTrajectorySequence(drive ->
                         drive.trajectorySequenceBuilder(START_POSE2)
                                 //put ur trajectory here
                                 //for example
-                                .splineTo(new Vector2d(-23.5, 39.5), Math.toRadians(-50))
-                                .back(20)
-                                .turn(Math.toRadians(-220))
-                                .strafeLeft(20.58)
-                                .back(15)
+                                .forward(26.5)
+                                .turn(Math.toRadians(-90))
+                                .forward(23.5)
                                 .build()
                 );
 
