@@ -24,6 +24,8 @@ public class Robot extends LinearOpMode {
     DcMotor intakeMotor;
     Intake intakewheel;
 
+    //
+    SampleMecanumDrive mecanumDrive;
 
     //Arm
     DcMotorEx armMotor;
@@ -42,23 +44,18 @@ public class Robot extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
 
         //Drive
-        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
-        drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        mecanumDrive = new SampleMecanumDrive(hardwareMap);
 
         //Intake
         intakeMotor = hardwareMap.dcMotor.get("intakeMotor");
         intakewheel = new Intake(intakeMotor);
-
-        //Intake Servos
-        intakeServo1 = hardwareMap.crservo.get("NormalServo");
-        intakeServo2 = hardwareMap.crservo.get("ReversedServo");
 
         //Bucket Servo
         bucketServo = hardwareMap.crservo.get("bucket");
         bucket = new Bucket(bucketServo);
 
         //Arm
-        armMotor = hardwareMap.dcMotorEx.get("armMotor");
+        armMotor = hardwareMap.get(DcMotorEx.class, "armMotor");
         arm = new Arm(armMotor);
 
         //Duck Spin
@@ -74,15 +71,13 @@ public class Robot extends LinearOpMode {
         while (opModeIsActive()) {
 
 
-            drive.setWeightedDrivePower(
-                    new Pose2d(
-                            -gamepad1.left_stick_y,
-                            -gamepad1.left_stick_x,
-                            -gamepad1.right_stick_x
-                    )
-            );
-            drive.update();
 
+            mecanumDrive.setDrivePower(
+                    new Pose2d(-gamepad1.left_stick_y,
+                            -gamepad1.left_stick_x,
+                            -gamepad1.right_stick_x));
+
+            mecanumDrive.updatePoseEstimate();
 
 
             //Intake motor
@@ -105,19 +100,19 @@ public class Robot extends LinearOpMode {
 
             //Arm Motors
             if (gamepad1.a && !armMotor.isBusy()) {
-                Arm.Level1;
+                arm.Level1();
             }
 
             if (gamepad1.b && !armMotor.isBusy()) {
-                Arm.Level2;
+                arm.Level2();
             }
 
-            if (gamepad1.c && !armMotor.isBusy()) {
-                Arm.Level3; 
+            if (gamepad1.y && !armMotor.isBusy()) {
+                arm.Level3();
             }
 
-            if (gamepad1.d && !armMotor.isBusy()) {
-                Arm.Home; 
+            if (gamepad1.x && !armMotor.isBusy()) {
+                arm.Home();
                 armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER); //Resets encoders at the home position
 
             }

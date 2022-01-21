@@ -84,10 +84,10 @@ public class MeepMeepTesting {
                 .setBackground(MeepMeep.Background.FIELD_FREIGHTFRENZY_ADI_DARK)
                 .setTheme(new ColorSchemeBlueDark())
                 .setBackgroundAlpha(1f)
-                .addEntity(bot.setDimensions(14.5, 18))
-                .addEntity(bot2.setDimensions(14.5, 18)) // comment out if you are only using one bot
-                .addEntity(bot3.setDimensions(14.5, 18))
-                .addEntity(bot4.setDimensions(14.5, 18))
+                .addEntity(bot.setDimensions(13.5, 18))
+                .addEntity(bot2.setDimensions(13.5, 18)) // comment out if you are only using one bot
+                .addEntity(bot3.setDimensions(13.5, 18))
+                .addEntity(bot4.setDimensions(13.5, 18))
                 .start();
     }
 }

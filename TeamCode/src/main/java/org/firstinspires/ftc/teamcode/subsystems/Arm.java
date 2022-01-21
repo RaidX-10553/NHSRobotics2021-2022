@@ -6,32 +6,32 @@ public class Arm {
  
     DcMotorEx armMotor;
 
-    public Arm(DcMotor armMotor) {
+    public Arm(DcMotorEx armMotor) {
         this.armMotor = armMotor;
 
 
     }
 
     public void Level1() {
-        this.armMotor.setTargetPosition();
-        this.motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        this.motor.setVelocity(1400);
+        this.armMotor.setTargetPosition(257);
+        this.armMotor.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+        this.armMotor.setVelocity(1400);
     }
     public void Level2() {
-        this.amrMotor.setTargetPosition();
-        this.motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        this.motor.setVelocity(1400);
+        this.armMotor.setTargetPosition(257);
+        this.armMotor.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+        this.armMotor.setVelocity(1400);
     }
 
     public void Level3() {
-        this.armMotor.setTargetPosition();
-        this.motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        this.motor.setVelocity(1400);
+        this.armMotor.setTargetPosition(257);
+        this.armMotor.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+        this.armMotor.setVelocity(1400);
     }
 
     public void Home() {
-        this.armMotor.setTargetPosition();
-        this.motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        this.motor.setVelocity(1400);
+        this.armMotor.setTargetPosition(0);
+        this.armMotor.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+        this.armMotor.setVelocity(1400);
     }
 }
