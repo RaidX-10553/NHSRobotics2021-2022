@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Util;
@@ -12,6 +13,8 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.subsystems.Intake;
 import org.firstinspires.ftc.teamcode.subsystems.Bucket;
 import org.firstinspires.ftc.teamcode.subsystems.Duck;
+import org.firstinspires.ftc.teamcode.subsystems.Arm;
+
 
 
 
@@ -21,24 +24,15 @@ public class Robot extends LinearOpMode {
     DcMotor intakeMotor;
     Intake intakewheel;
 
-    //Intake Servo
-    CRServo intakeServo1;
-    CRServo intakeServo2;
 
     //Arm
-    //DcMotor longArm;
-    //DcMotor smallArm;
-
-    //Arm Servo
-    CRServo ArmServo;
+    DcMotorEx armMotor;
+    Arm arm;
 
     //Bucket Servo
-    //CRServo bucketServo;
-    //Bucket bucket;
-
-    //Drive
+    CRServo bucketServo;
+    Bucket bucket;
     
-
     //Duck Spin
     DcMotor duckMotor;
     Duck duckSpin;
@@ -60,15 +54,12 @@ public class Robot extends LinearOpMode {
         intakeServo2 = hardwareMap.crservo.get("ReversedServo");
 
         //Bucket Servo
-        //bucketServo = hardwareMap.crservo.get("bucket");
-        //bucket = new Bucket(bucketServo);
+        bucketServo = hardwareMap.crservo.get("bucket");
+        bucket = new Bucket(bucketServo);
 
-        //Arm Servo
-        ArmServo = hardwareMap.crservo.get("ArmServo");
-
-        //Arm Motors
-        //longArm = hardwareMap.dcMotor.get("ArmMotor");
-        //smallArm = hardwareMap.dcMotor.get("smallArmMotor");
+        //Arm
+        armMotor = hardwareMap.dcMotorEx.get("armMotor");
+        arm = new Arm(armMotor);
 
         //Duck Spin
         duckMotor = hardwareMap.dcMotor.get("duckMotor");
@@ -109,42 +100,29 @@ public class Robot extends LinearOpMode {
             }
 
 
-
-            //Intake Arm Servos
-            //Needs to increase each time by 0.05
-            if (gamepad1.right_bumper) {
-                intakeServo1.setPower(0.05);
-                intakeServo2.setPower(0.05);
-            }
-            if (gamepad1.left_bumper) {
-                intakeServo1.setPower(-0.05);
-                intakeServo2.setPower(-0.05);
-
-            }
-
-            /*
+            
+            armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
             //Arm Motors
-            double arm = gamepad2.left_stick_y;
-                longArm.setPower(arm);
+            if (gamepad1.a && !armMotor.isBusy()) {
+                Arm.Level1;
+            }
 
-            double smolarm = gamepad2.right_stick_y;
-                smallArm.setPower(smolarm);
+            if (gamepad1.b && !armMotor.isBusy()) {
+                Arm.Level2;
+            }
 
-            */
+            if (gamepad1.c && !armMotor.isBusy()) {
+                Arm.Level3; 
+            }
+
+            if (gamepad1.d && !armMotor.isBusy()) {
+                Arm.Home; 
+                armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER); //Resets encoders at the home position
+
+            }
 
 
-
-
-            //Arm Servo
-
-            ArmServo.setPower(gamepad2.right_trigger * 0.4);
-            ArmServo.setPower(-gamepad2.left_trigger * 0.4);
-
-
-
-
-            /*
             //Bucket Servo
             if (gamepad2.right_bumper) {
                 bucket.Drop();
@@ -152,7 +130,6 @@ public class Robot extends LinearOpMode {
             if (gamepad2.left_bumper) {
                 bucket.Return();
             }
-            */
 
 
             //DUCK SPIN
