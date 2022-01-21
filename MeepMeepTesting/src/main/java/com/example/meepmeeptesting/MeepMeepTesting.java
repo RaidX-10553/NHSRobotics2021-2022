@@ -50,7 +50,7 @@ public class MeepMeepTesting {
 
         RoadRunnerBotEntity bot3 = new DefaultBotBuilder(meepMeep)
                 .setConstraints(30, 30, Math.toRadians(180), Math.toRadians(180), 13.5)
-                .setColorScheme(new ColorSchemeBlueDark())
+                .setColorScheme(new ColorSchemeRedDark())
                 .followTrajectorySequence(drive ->
                         drive.trajectorySequenceBuilder(START_POSE3)
                                 //put ur trajectory here
@@ -67,7 +67,7 @@ public class MeepMeepTesting {
 
         RoadRunnerBotEntity bot4 = new DefaultBotBuilder(meepMeep)
                 .setConstraints(30, 30, Math.toRadians(180), Math.toRadians(180), 13.5)
-                .setColorScheme(new ColorSchemeRedDark())
+                .setColorScheme(new ColorSchemeBlueDark())
                 .followTrajectorySequence(drive ->
                         drive.trajectorySequenceBuilder(START_POSE4)
                                 //put ur trajectory here

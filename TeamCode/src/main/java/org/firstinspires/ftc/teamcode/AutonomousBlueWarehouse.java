@@ -17,7 +17,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import org.firstinspires.ftc.teamcode.subsystems.AprilTagLocation;
 import org.firstinspires.ftc.teamcode.subsystems.MarkerDetectionPipeline;
 
-
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
@@ -25,6 +25,7 @@ import org.openftc.easyopencv.OpenCvInternalCamera;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
+import org.openftc.easyopencv.OpenCvWebcam;
 
 
 @Autonomous(name="AutoBlueWarehouse", group="Autonomous")
@@ -32,7 +33,8 @@ public class AutonomousBlueWarehouse extends LinearOpMode {
 
     /* Declare OpMode members. */
 
-    OpenCvCamera phoneCam;
+    OpenCvWebcam webcam;
+    WebcamName webcamName = hardwareMap.get(WebcamName.class, "Webby");
 
     MarkerDetectionPipeline pipeline;
 
@@ -43,11 +45,11 @@ public class AutonomousBlueWarehouse extends LinearOpMode {
         pipeline = new MarkerDetectionPipeline();
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        phoneCam = OpenCvCameraFactory.getInstance().createInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId);
 
-        phoneCam.setPipeline(pipeline);
+        webcam.setPipeline(pipeline);
+        webcam = OpenCvCameraFactory.getInstance().createWebcam(webcamName, cameraMonitorViewId);
 
-        phoneCam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
+        webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
             public void onOpened() {
                 /*
@@ -61,7 +63,7 @@ public class AutonomousBlueWarehouse extends LinearOpMode {
                  * For a rear facing camera or a webcam, rotation is defined assuming the camera is facing
                  * away from the user.
                  */
-                phoneCam.startStreaming(640, 480, OpenCvCameraRotation.SIDEWAYS_RIGHT);
+                webcam.startStreaming(640, 480, OpenCvCameraRotation.UPRIGHT);
             }
 
             @Override
@@ -71,6 +73,7 @@ public class AutonomousBlueWarehouse extends LinearOpMode {
                  */
             }
         });
+
 
         //Still working on the trajectories, not final
         //Road Runner Trajectory
@@ -159,7 +162,7 @@ public class AutonomousBlueWarehouse extends LinearOpMode {
 
             if (started = true) {
 
-                phoneCam.stopStreaming();
+                webcam.stopStreaming();
             }
 
         }
