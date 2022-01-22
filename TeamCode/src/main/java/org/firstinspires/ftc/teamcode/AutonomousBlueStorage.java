@@ -13,6 +13,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.subsystems.AprilTagLocation;
 import org.firstinspires.ftc.teamcode.subsystems.MarkerDetectionPipeline;
@@ -27,13 +28,12 @@ import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 import org.openftc.easyopencv.OpenCvWebcam;
 
 
-@Autonomous(name="AutoBlueStorage1", group="Autonomous")
+@Autonomous(name="AutoBlueStorage", group="Autonomous")
 public class AutonomousBlueStorage extends LinearOpMode {
 
     /* Declare OpMode members. */
 
     OpenCvWebcam webcam;
-    WebcamName webcamName = hardwareMap.get(WebcamName.class, "Webby");
 
     MarkerDetectionPipeline pipeline;
 
@@ -44,9 +44,10 @@ public class AutonomousBlueStorage extends LinearOpMode {
         pipeline = new MarkerDetectionPipeline();
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webby"), cameraMonitorViewId);
 
         webcam.setPipeline(pipeline);
-        webcam = OpenCvCameraFactory.getInstance().createWebcam(webcamName, cameraMonitorViewId);
+
 
         webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
