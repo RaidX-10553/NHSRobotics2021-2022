@@ -34,7 +34,7 @@ public class AutonomousBlueWarehouse extends LinearOpMode {
     /* Declare OpMode members. */
 
     OpenCvWebcam webcam;
-    WebcamName webcamName = hardwareMap.get(WebcamName.class, "Webby");
+
 
     MarkerDetectionPipeline pipeline;
 
@@ -45,9 +45,10 @@ public class AutonomousBlueWarehouse extends LinearOpMode {
         pipeline = new MarkerDetectionPipeline();
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webby"), cameraMonitorViewId);
 
         webcam.setPipeline(pipeline);
-        webcam = OpenCvCameraFactory.getInstance().createWebcam(webcamName, cameraMonitorViewId);
+
 
         webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override

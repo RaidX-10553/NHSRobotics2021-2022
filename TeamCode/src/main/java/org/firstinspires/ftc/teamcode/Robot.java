@@ -24,7 +24,7 @@ public class Robot extends LinearOpMode {
     DcMotor intakeMotor;
     Intake intakewheel;
 
-    //
+    //Drive
     SampleMecanumDrive mecanumDrive;
 
     //Arm
@@ -118,6 +118,7 @@ public class Robot extends LinearOpMode {
             }
 
 
+
             //Bucket Servo
             if (gamepad2.right_bumper) {
                 bucket.Drop();
@@ -140,6 +141,12 @@ public class Robot extends LinearOpMode {
                 duckSpin.DontSpin();
             }
 
+            while (opModeIsActive()) {
+                telemetry.addData("velocity", armMotor.getVelocity());
+                telemetry.addData("position", armMotor.getCurrentPosition());
+                telemetry.addData("is at target", !armMotor.isBusy());
+                telemetry.update();
+            }
         }
         idle();
     }
