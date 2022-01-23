@@ -62,7 +62,7 @@ public class Robot extends LinearOpMode {
         duckMotor = hardwareMap.dcMotor.get("duckMotor");
         duckSpin = new Duck(duckMotor);
 
-        // either left or right
+
         
 
 
@@ -70,8 +70,7 @@ public class Robot extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-
-
+            //Drive
             mecanumDrive.setDrivePower(
                     new Pose2d(-gamepad1.left_stick_y,
                             -gamepad1.left_stick_x,
@@ -95,7 +94,6 @@ public class Robot extends LinearOpMode {
             }
 
 
-            
             armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
             //Arm Motors
@@ -116,7 +114,6 @@ public class Robot extends LinearOpMode {
                 armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER); //Resets encoders at the home position
 
             }
-
 
 
             //Bucket Servo
@@ -141,12 +138,13 @@ public class Robot extends LinearOpMode {
                 duckSpin.DontSpin();
             }
 
-            while (opModeIsActive()) {
-                telemetry.addData("velocity", armMotor.getVelocity());
-                telemetry.addData("position", armMotor.getCurrentPosition());
-                telemetry.addData("is at target", !armMotor.isBusy());
-                telemetry.update();
-            }
+
+
+            telemetry.addData("velocity", armMotor.getVelocity());
+            telemetry.addData("position", armMotor.getCurrentPosition());
+            telemetry.addData("is at target", !armMotor.isBusy());
+            telemetry.update();
+
         }
         idle();
     }
