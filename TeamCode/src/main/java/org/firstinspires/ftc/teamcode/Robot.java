@@ -67,6 +67,7 @@ public class Robot extends LinearOpMode {
 
 
         waitForStart();
+        armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         while (opModeIsActive()) {
 
@@ -94,7 +95,6 @@ public class Robot extends LinearOpMode {
             }
 
 
-            armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
             //Arm Motors
             if (gamepad1.a && !armMotor.isBusy()) {
