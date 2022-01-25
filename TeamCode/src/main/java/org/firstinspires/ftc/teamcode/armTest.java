@@ -47,7 +47,7 @@ public class armTest extends LinearOpMode {
 
             if (gamepad1.x && !armMotor.isBusy()) {
                 arm.Home();
-                armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER); //Resets encoders at the home position
+                 //Resets encoders at the home position
 
             }
 

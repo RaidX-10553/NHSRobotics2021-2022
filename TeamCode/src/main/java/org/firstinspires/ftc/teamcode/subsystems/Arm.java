@@ -1,10 +1,12 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 public class Arm {
  
     DcMotorEx armMotor;
+
 
     public Arm(DcMotorEx armMotor) {
         this.armMotor = armMotor;
@@ -30,8 +32,10 @@ public class Arm {
     }
 
     public void Home() {
-        this.armMotor.setTargetPosition(0);
+        this.armMotor.setTargetPosition(-armMotor.getCurrentPosition());
         this.armMotor.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
         this.armMotor.setVelocity(1400);
+        this.armMotor.setTargetPosition(0);
+
     }
 }
