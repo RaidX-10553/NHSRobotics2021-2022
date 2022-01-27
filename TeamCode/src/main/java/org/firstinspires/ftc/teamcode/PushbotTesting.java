@@ -9,21 +9,24 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 
 
+
+
 @TeleOp(name = "Teleop Pushbot", group = "TeleOp")
 public class PushbotTesting extends LinearOpMode {
     SampleMecanumDrive mecanumDrive;
 
     @Override
     public void runOpMode() throws InterruptedException {
+
         mecanumDrive = new SampleMecanumDrive(hardwareMap);
      
     waitForStart();
    
     while (opModeIsActive()) {
         mecanumDrive.setDrivePower(
-                new Pose2d(-gamepad1.left_stick_y,
-                        -gamepad1.left_stick_x,
-                        -gamepad1.right_stick_x));
+                new Pose2d(gamepad1.left_stick_y,
+                        gamepad1.right_stick_x,
+                        gamepad1.left_stick_x));
 
         mecanumDrive.updatePoseEstimate();
         
