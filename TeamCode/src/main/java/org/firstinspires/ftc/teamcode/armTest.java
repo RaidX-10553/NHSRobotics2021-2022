@@ -24,9 +24,8 @@ public class armTest extends LinearOpMode {
         armMotor = hardwareMap.get(DcMotorEx.class, "armMotor");
         arm = new Arm(armMotor);
         armMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-        armMotor.setDirection(DcMotor.Direction.REVERSE);
+        //armMotor.setDirection(DcMotor.Direction.REVERSE);
         armMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
 
         waitForStart();
 
@@ -54,8 +53,7 @@ public class armTest extends LinearOpMode {
             }
 
 
-            telemetry.addData("correction", correction);
-            telemetry.addData("correction100", 100 * correction);
+            telemetry.addData("velocity", armMotor.getVelocity());
             telemetry.addData("position", armMotor.getCurrentPosition());
             telemetry.update();
 
