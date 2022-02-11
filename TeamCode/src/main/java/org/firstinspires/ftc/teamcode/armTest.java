@@ -5,12 +5,14 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+
 import org.firstinspires.ftc.teamcode.subsystems.Arm;
 
 
-@TeleOp(name = "Arm Test", group = "TeleOp")
-public class armTest extends LinearOpMode {
 
+
+@TeleOp(name = "ArmTest", group = "TeleOp")
+public class armTest extends LinearOpMode {
 
     //Arm
     DcMotorEx armMotor;
@@ -23,13 +25,10 @@ public class armTest extends LinearOpMode {
         //Arm
         armMotor = hardwareMap.get(DcMotorEx.class, "armMotor");
         arm = new Arm(armMotor);
-        armMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-        //armMotor.setDirection(DcMotor.Direction.REVERSE);
-        armMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
 
         waitForStart();
-
-
+        armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         while (opModeIsActive()) {
 
@@ -48,13 +47,15 @@ public class armTest extends LinearOpMode {
 
             if (gamepad1.x && !armMotor.isBusy()) {
                 arm.Home();
-                 //Resets encoders at the home position
+
 
             }
 
 
+
             telemetry.addData("velocity", armMotor.getVelocity());
             telemetry.addData("position", armMotor.getCurrentPosition());
+            telemetry.addData("is at target", !armMotor.isBusy());
             telemetry.update();
 
         }

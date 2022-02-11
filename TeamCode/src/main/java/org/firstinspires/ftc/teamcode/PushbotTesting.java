@@ -11,7 +11,7 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 
 
 
-@TeleOp(name = "Teleop Pushbot", group = "TeleOp")
+@TeleOp(name = "Pushbot", group = "TeleOp")
 public class PushbotTesting extends LinearOpMode {
     SampleMecanumDrive mecanumDrive;
 
