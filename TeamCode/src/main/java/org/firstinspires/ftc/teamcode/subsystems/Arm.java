@@ -6,11 +6,9 @@ public class Arm {
 
     DcMotorEx armMotor;
 
-
     public Arm(DcMotorEx armMotor) {
         this.armMotor = armMotor;
         this.armMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-        this.armMotor.setTargetPositionTolerance(10);
     }
     public void Level1() {
         this.armMotor.setTargetPosition(1120);

@@ -40,6 +40,10 @@ public class Robot extends LinearOpMode {
     Duck duckSpin;
 
 
+
+    //Boolean
+    private Boolean d_loop = false;
+
     @Override
     public void runOpMode() throws InterruptedException {
 
@@ -73,21 +77,21 @@ public class Robot extends LinearOpMode {
 
             //Drive
             mecanumDrive.setDrivePower(
-                    new Pose2d(-gamepad1.left_stick_y,
-                            -gamepad1.left_stick_x,
-                            -gamepad1.right_stick_x));
+                    new Pose2d(gamepad1.left_stick_y,
+                            gamepad1.left_stick_x,
+                            gamepad1.right_stick_x));
 
             mecanumDrive.updatePoseEstimate();
 
 
             //Intake motor
-            if (gamepad1.left_trigger >= 0.5) {
+            if (gamepad2.left_trigger >= 0.5) {
                 intakewheel.In();
             } else {
                 intakewheel.Off();
             }
 
-            if (gamepad1.right_trigger >= 0.5) {
+            if (gamepad2.right_trigger >= 0.5) {
                 intakewheel.Out();
             } else {
                 intakewheel.Off();
@@ -96,27 +100,64 @@ public class Robot extends LinearOpMode {
 
 
 
-            //Arm Motors
-            if (gamepad1.a && !armMotor.isBusy()) {
+            // Arm Motors
+            if (gamepad2.a && !armMotor.isBusy()) {
+                telemetry.addData("Level:", "1" );
                 arm.Level1();
             }
 
-            if (gamepad1.b && !armMotor.isBusy()) {
+            if (gamepad2.b && !armMotor.isBusy()) {
+                telemetry.addData("Level:", "2" );
                 arm.Level2();
             }
 
-            if (gamepad1.y && !armMotor.isBusy()) {
+            if (gamepad2.y && !armMotor.isBusy()) {
+                telemetry.addData("Level:", "3" );
                 arm.Level3();
             }
 
-            if (gamepad1.x && !armMotor.isBusy()) {
+            if (gamepad2.x && !armMotor.isBusy()) {
+                telemetry.addData("Level:", "Home" );
                 arm.Home();
 
 
             }
 
+            // Sets while loop to start
+            // Manual Mode
+            if (gamepad2.dpad_down) {
+                d_loop = true;
+            }
 
-            //Bucket Servo
+            // Dpad_Loop
+            // Allows for manual control
+            while (!armMotor.isBusy() && d_loop && opModeIsActive()) {
+                telemetry.addData("Arm Mode:", "MANUAL");
+                telemetry.addData("velocity", armMotor.getVelocity());
+                telemetry.addData("position", armMotor.getCurrentPosition());
+                telemetry.update();
+
+                armMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                armMotor.setPower((-gamepad2.left_stick_y) / 2);
+
+                if (gamepad2.right_bumper) {
+                    bucket.Drop();
+                }
+                if (gamepad2.left_bumper) {
+                    bucket.Return();
+                }
+
+                if ((armMotor.getCurrentPosition() < 0) || (armMotor.getCurrentPosition() > 3360) || gamepad2.dpad_up) {
+                    telemetry.addData("Loop Ends", "true");
+                    armMotor.setPower(0);
+                    d_loop = false;
+                }
+            }
+
+
+
+
+                //Bucket Servo
             if (gamepad2.right_bumper) {
                 bucket.Drop();
             }
@@ -126,13 +167,13 @@ public class Robot extends LinearOpMode {
 
 
             //DUCK SPIN
-            if (gamepad2.a) {
+            if (gamepad2.left_bumper) {
                 duckSpin.Spin();
             } else{
                 duckSpin.DontSpin();
             }
 
-            if (gamepad2.b) {
+            if (gamepad2.right_bumper) {
                 duckSpin.ReverseSpin();
             } else{
                 duckSpin.DontSpin();
@@ -140,6 +181,7 @@ public class Robot extends LinearOpMode {
 
 
 
+            telemetry.addData("Arm Mode:", "AUTOMATIC" );
             telemetry.addData("velocity", armMotor.getVelocity());
             telemetry.addData("position", armMotor.getCurrentPosition());
             telemetry.addData("is at target", !armMotor.isBusy());
