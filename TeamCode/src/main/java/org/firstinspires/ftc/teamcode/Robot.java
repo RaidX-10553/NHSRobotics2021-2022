@@ -11,7 +11,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Util;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.subsystems.Intake;
-import org.firstinspires.ftc.teamcode.subsystems.Bucket;
+import org.firstinspires.ftc.teamcode.subsystems.Claw;
 import org.firstinspires.ftc.teamcode.subsystems.Duck;
 import org.firstinspires.ftc.teamcode.subsystems.Arm;
 
@@ -32,8 +32,8 @@ public class Robot extends LinearOpMode {
     Arm arm;
 
     //Bucket Servo
-    CRServo bucketServo;
-    Bucket bucket;
+    CRServo clawServo;
+    Claw claw;
     
     //Duck Spin
     DcMotor duckMotor;
@@ -55,8 +55,8 @@ public class Robot extends LinearOpMode {
         intakewheel = new Intake(intakeMotor);
 
         //Bucket Servo
-        bucketServo = hardwareMap.crservo.get("bucket");
-        bucket = new Bucket(bucketServo);
+        clawServo = hardwareMap.crservo.get("RENAME");
+        claw = new Claw(clawServo);
 
         //Arm
         armMotor = hardwareMap.get(DcMotorEx.class, "armMotor");
@@ -141,10 +141,10 @@ public class Robot extends LinearOpMode {
                 armMotor.setPower((-gamepad2.left_stick_y) / 2);
 
                 if (gamepad2.right_bumper) {
-                    bucket.Drop();
+                    claw.Open();
                 }
                 if (gamepad2.left_bumper) {
-                    bucket.Return();
+                    claw.Close();
                 }
 
                 if ((armMotor.getCurrentPosition() < 0) || (armMotor.getCurrentPosition() > 3360) || gamepad2.dpad_up) {
@@ -159,10 +159,10 @@ public class Robot extends LinearOpMode {
 
                 //Bucket Servo
             if (gamepad2.right_bumper) {
-                bucket.Drop();
+                claw.Open();
             }
             if (gamepad2.left_bumper) {
-                bucket.Return();
+                claw.Close();
             }
 
 

@@ -54,7 +54,7 @@ public class PushbotTesting extends LinearOpMode {
                             (gamepad1.left_stick_x)/2.5));
             mecanumDrive.updatePoseEstimate();
 
-            if (gamepad1.dpad_up) {
+            if (gamepad1.dpad_right) {
                 telemetry.addData("Mode", "NORMAL");
                 precise = false;
             }
@@ -73,7 +73,7 @@ public class PushbotTesting extends LinearOpMode {
                             -gamepad1.left_stick_x));
             mecanumDrive.updatePoseEstimate();
 
-            if (gamepad1.dpad_down) {
+            if (gamepad1.dpad_right) {
                 telemetry.addData("Mode", "NORMAL");
                 reverse = false;
             }
