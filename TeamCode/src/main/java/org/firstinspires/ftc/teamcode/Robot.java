@@ -18,7 +18,7 @@ import org.firstinspires.ftc.teamcode.subsystems.Arm;
 // What?
 
 
-@TeleOp(name = "Comp TeleOp", group = "TeleOp")
+@TeleOp(name = "Ryan Teleop", group = "TeleOp")
 public class Robot extends LinearOpMode {
     //Intake
     DcMotor intakeMotor;
@@ -28,12 +28,12 @@ public class Robot extends LinearOpMode {
     SampleMecanumDrive mecanumDrive;
 
     //Arm
-    DcMotorEx armMotor;
-    Arm arm;
+    //DcMotorEx armMotor;
+    //Arm arm;
 
     //Bucket Servo
-    CRServo clawServo;
-    Claw claw;
+    //CRServo clawServo;
+    //Claw claw;
     
     //Duck Spin
     DcMotor duckMotor;
@@ -43,6 +43,8 @@ public class Robot extends LinearOpMode {
 
     //Boolean
     private Boolean d_loop = false;
+    private boolean reverse = false;
+    private boolean precise = false;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -55,12 +57,12 @@ public class Robot extends LinearOpMode {
         intakewheel = new Intake(intakeMotor);
 
         //Bucket Servo
-        clawServo = hardwareMap.crservo.get("RENAME");
-        claw = new Claw(clawServo);
+        //clawServo = hardwareMap.crservo.get("RENAME");
+        //claw = new Claw(clawServo);
 
         //Arm
-        armMotor = hardwareMap.get(DcMotorEx.class, "armMotor");
-        arm = new Arm(armMotor);
+        //armMotor = hardwareMap.get(DcMotorEx.class, "armMotor");
+        //arm = new Arm(armMotor);
 
         //Duck Spin
         duckMotor = hardwareMap.dcMotor.get("duckMotor");
@@ -71,17 +73,65 @@ public class Robot extends LinearOpMode {
 
 
         waitForStart();
-        armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        //armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         while (opModeIsActive()) {
 
             //Drive
+            if (gamepad1.dpad_down) {
+                reverse = true;
+            }
+
+            if (gamepad1.dpad_up) {
+                precise = true;
+            }
+
+            // Precise driving activated with Dpad_up
+            // To exit press Dpad_up again
+            while (precise && opModeIsActive()) {
+                telemetry.addData("Mode", "PRECISE");
+                telemetry.update();
+
+                mecanumDrive.setDrivePower(
+                        new Pose2d((gamepad1.left_stick_y)/2.5,
+                                (gamepad1.right_stick_x)/2.5,
+                                (gamepad1.left_stick_x)/2.5));
+                mecanumDrive.updatePoseEstimate();
+
+                if (gamepad1.dpad_right) {
+                    telemetry.addData("Mode", "NORMAL");
+                    precise = false;
+                }
+
+            }
+
+            // Reverse driving activated with Dpad_down
+            // To exit press Dpad_down again
+            while (reverse && opModeIsActive()) {
+                telemetry.addData("Mode", "REVERSE");
+                telemetry.update();
+
+                mecanumDrive.setDrivePower(
+                        new Pose2d(-gamepad1.left_stick_y,
+                                -gamepad1.right_stick_x,
+                                -gamepad1.left_stick_x));
+                mecanumDrive.updatePoseEstimate();
+
+                if (gamepad1.dpad_right) {
+                    telemetry.addData("Mode", "NORMAL");
+                    reverse = false;
+                }
+
+            }
+
+            // Normal Driving
             mecanumDrive.setDrivePower(
                     new Pose2d(gamepad1.left_stick_y,
-                            gamepad1.left_stick_x,
-                            gamepad1.right_stick_x));
-
+                            gamepad1.right_stick_x,
+                            gamepad1.left_stick_x));
             mecanumDrive.updatePoseEstimate();
+
+            telemetry.update();
 
 
             //Intake motor
@@ -100,6 +150,7 @@ public class Robot extends LinearOpMode {
 
 
 
+            /*
             // Arm Motors
             if (gamepad2.a && !armMotor.isBusy()) {
                 telemetry.addData("Level:", "1" );
@@ -119,51 +170,19 @@ public class Robot extends LinearOpMode {
             if (gamepad2.x && !armMotor.isBusy()) {
                 telemetry.addData("Level:", "Home" );
                 arm.Home();
-
-
             }
+            */
+
+
+
 
             // Sets while loop to start
             // Manual Mode
-            if (gamepad2.dpad_down) {
-                d_loop = true;
-            }
-
-            // Dpad_Loop
-            // Allows for manual control
-            while (!armMotor.isBusy() && d_loop && opModeIsActive()) {
-                telemetry.addData("Arm Mode:", "MANUAL");
-                telemetry.addData("velocity", armMotor.getVelocity());
-                telemetry.addData("position", armMotor.getCurrentPosition());
-                telemetry.update();
-
-                armMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-                armMotor.setPower((-gamepad2.left_stick_y) / 2);
-
-                if (gamepad2.right_bumper) {
-                    claw.Open();
-                }
-                if (gamepad2.left_bumper) {
-                    claw.Close();
-                }
-
-                if ((armMotor.getCurrentPosition() < 0) || (armMotor.getCurrentPosition() > 3360) || gamepad2.dpad_up) {
-                    telemetry.addData("Loop Ends", "true");
-                    armMotor.setPower(0);
-                    d_loop = false;
-                }
-            }
 
 
 
 
-                //Bucket Servo
-            if (gamepad2.right_bumper) {
-                claw.Open();
-            }
-            if (gamepad2.left_bumper) {
-                claw.Close();
-            }
+
 
 
             //DUCK SPIN
@@ -181,10 +200,7 @@ public class Robot extends LinearOpMode {
 
 
 
-            telemetry.addData("Arm Mode:", "AUTOMATIC" );
-            telemetry.addData("velocity", armMotor.getVelocity());
-            telemetry.addData("position", armMotor.getCurrentPosition());
-            telemetry.addData("is at target", !armMotor.isBusy());
+
             telemetry.update();
 
         }

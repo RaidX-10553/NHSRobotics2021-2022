@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.util.Util;
 
 
 @TeleOp(name = "Project X", group = "TeleOp")
-public class ProjectX extends LinearOpMode {
+public class ProjectX_Anton extends LinearOpMode {
 
 
     //Drive
