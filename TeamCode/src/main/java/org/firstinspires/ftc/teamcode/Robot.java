@@ -28,8 +28,8 @@ public class Robot extends LinearOpMode {
     SampleMecanumDrive mecanumDrive;
 
     //Arm
-    //DcMotorEx armMotor;
-    //Arm arm;
+    DcMotorEx armMotor;
+    Arm arm;
 
     //Bucket Servo
     //CRServo clawServo;
@@ -61,8 +61,8 @@ public class Robot extends LinearOpMode {
         //claw = new Claw(clawServo);
 
         //Arm
-        //armMotor = hardwareMap.get(DcMotorEx.class, "armMotor");
-        //arm = new Arm(armMotor);
+        armMotor = hardwareMap.get(DcMotorEx.class, "armMotor");
+        arm = new Arm(armMotor);
 
         //Duck Spin
         duckMotor = hardwareMap.dcMotor.get("duckMotor");
@@ -151,7 +151,7 @@ public class Robot extends LinearOpMode {
 
 
 
-            /*
+            
             // Arm Motors
             if (gamepad2.a && !armMotor.isBusy()) {
                 telemetry.addData("Level:", "1" );
@@ -172,7 +172,7 @@ public class Robot extends LinearOpMode {
                 telemetry.addData("Level:", "Home" );
                 arm.Home();
             }
-            */
+            
 
 
 
