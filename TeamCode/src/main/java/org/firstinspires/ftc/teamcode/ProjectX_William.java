@@ -1,9 +1,9 @@
 package org.firstinspires.ftc.teamcode;
 
-        import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-        import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-        import com.qualcomm.robotcore.hardware.DcMotor;
-        import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 
 @TeleOp(name = "xDrive TeleOp", group = "TeleOp")
@@ -32,10 +32,14 @@ public class ProjectX_William extends LinearOpMode {
         backMotor = hardwareMap.dcMotor.get("motorC");
         leftMotor = hardwareMap.dcMotor.get("motorD");
 
+        backMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+
         frontMotor.setPower(0);
         backMotor.setPower(0);
         rightMotor.setPower(0);
         leftMotor.setPower(0);
+
+
 
 
         waitForStart();
@@ -47,8 +51,7 @@ public class ProjectX_William extends LinearOpMode {
 
             //if rightStick is being used
             if (spinPower != 0){
-                //direction probably wrong, fix when testing
-                frontMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+
 
                 frontMotor.setPower(spinPower);
                 backMotor.setPower(spinPower);
@@ -59,23 +62,29 @@ public class ProjectX_William extends LinearOpMode {
 
             //not spin stuff
             else {
-                //direction probably wrong, fix when testing
-                frontMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+
+
 
                 yAxisPower = -gamepad1.left_stick_y;
                 xAxisPower = -gamepad1.left_stick_x;
 
-                frontMotor.setPower(xAxisPower);
-                backMotor.setPower(-xAxisPower);
+                //left and right
+                frontMotor.setPower(-xAxisPower);
+                backMotor.setPower(xAxisPower);
+                leftMotor.setPower(xAxisPower);
+                rightMotor.setPower(-xAxisPower);
 
-                rightMotor.setPower(yAxisPower);
-                leftMotor.setPower(-yAxisPower);
+                //up and down
+                frontMotor.setPower(yAxisPower);
+                backMotor.setPower(-yAxisPower);
+                leftMotor.setPower(yAxisPower);
+                rightMotor.setPower(-yAxisPower);
             }
 
             //might change values to positive when testing
-            telemetry.addData("X-Axis Power", -gamepad1.left_stick_x);
+            telemetry.addData("X-Axis Power", gamepad1.left_stick_x);
             telemetry.addData("Y-Axis Power", -gamepad1.left_stick_y);
-            telemetry.addData("Spin Power", -gamepad1.right_stick_x);
+            telemetry.addData("Spin Power", Math.abs(gamepad1.right_stick_x));
             telemetry.update();
 
 
