@@ -1,25 +1,24 @@
 package org.firstinspires.ftc.teamcode;
 
 
+import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.CRServo;
-import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.Util;
+
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
-import org.firstinspires.ftc.teamcode.subsystems.Intake;
+import org.firstinspires.ftc.teamcode.subsystems.Arm;
 import org.firstinspires.ftc.teamcode.subsystems.Claw;
 import org.firstinspires.ftc.teamcode.subsystems.Duck;
-import org.firstinspires.ftc.teamcode.subsystems.Arm;
+import org.firstinspires.ftc.teamcode.subsystems.Intake;
 
 // What?
 
 
 @TeleOp(name = "Ryan Teleop", group = "TeleOp")
-public class Robot extends LinearOpMode {
+public class DeclanRobot extends LinearOpMode {
     //Intake
     DcMotor intakeMotor;
     Intake intakewheel;
@@ -32,8 +31,8 @@ public class Robot extends LinearOpMode {
     Arm arm;
 
     //Bucket Servo
-    //CRServo clawServo;
-    //Claw claw;
+    CRServo clawServo;
+    Claw claw;
     
     //Duck Spin
     DcMotor duckMotor;
@@ -56,16 +55,16 @@ public class Robot extends LinearOpMode {
         intakeMotor = hardwareMap.dcMotor.get("intakeMotor");
         intakewheel = new Intake(intakeMotor);
 
-        //Bucket Servo
-        //clawServo = hardwareMap.crservo.get("RENAME");
-        //claw = new Claw(clawServo);
+        //Claw Servo
+        clawServo = hardwareMap.crservo.get("claw");
+        claw = new Claw(clawServo);
 
         //Arm
         armMotor = hardwareMap.get(DcMotorEx.class, "armMotor");
         arm = new Arm(armMotor);
 
         //Duck Spin
-        duckMotor = hardwareMap.dcMotor.get("duckMotor");
+        duckMotor = hardwareMap.dcMotor.get("duck");
         duckSpin = new Duck(duckMotor);
 
 

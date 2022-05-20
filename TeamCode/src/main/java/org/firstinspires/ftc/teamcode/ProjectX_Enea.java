@@ -1,6 +1,7 @@
 /*
 package org.firstinspires.ftc.teamcode;
 
+/*
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -29,5 +30,6 @@ public class ProjectX_Enea {
         Back.setDirection(DcMotor.Direction.REVERSE);
     }
 }
+*/
 enea is a tard
  */
