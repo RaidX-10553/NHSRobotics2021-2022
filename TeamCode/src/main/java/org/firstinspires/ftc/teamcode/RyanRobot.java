@@ -11,11 +11,11 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Util;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.subsystems.Intake;
-import org.firstinspires.ftc.teamcode.subsystems.Claw;
+import org.firstinspires.ftc.teamcode.subsystems.Bucket;
 import org.firstinspires.ftc.teamcode.subsystems.Duck;
 import org.firstinspires.ftc.teamcode.subsystems.Arm;
 
-// What?
+
 
 
 @TeleOp(name = "Ryan Teleop", group = "TeleOp")
@@ -32,8 +32,8 @@ public class Robot extends LinearOpMode {
     Arm arm;
 
     //Bucket Servo
-    //CRServo clawServo;
-    //Claw claw;
+    Servo bucketServo;
+    Bucket bucket;
     
     //Duck Spin
     DcMotor duckMotor;
@@ -53,19 +53,19 @@ public class Robot extends LinearOpMode {
         mecanumDrive = new SampleMecanumDrive(hardwareMap);
 
         //Intake
-        intakeMotor = hardwareMap.dcMotor.get("intakeMotor");
+        intakeMotor = hardwareMap.dcMotor.get("intake");
         intakewheel = new Intake(intakeMotor);
 
         //Bucket Servo
-        //clawServo = hardwareMap.crservo.get("RENAME");
-        //claw = new Claw(clawServo);
+        bucketServo = hardwareMap.servo.get("bucket");
+        bucket = new Bucket(bucketServo);
 
         //Arm
-        armMotor = hardwareMap.get(DcMotorEx.class, "armMotor");
+        armMotor = hardwareMap.get(DcMotorEx.class, "arm");
         arm = new Arm(armMotor);
 
         //Duck Spin
-        duckMotor = hardwareMap.dcMotor.get("duckMotor");
+        duckMotor = hardwareMap.dcMotor.get("duck");
         duckSpin = new Duck(duckMotor);
 
 
@@ -177,9 +177,14 @@ public class Robot extends LinearOpMode {
 
 
 
-            // Sets while loop to start
-            // Manual Mode
+            // Bucket
+            if (gamepad2.dpad_down) {
+                bucket.Home();
+            }
 
+            if (gamepad2.dpad_up) {
+                bucket.Dump();
+            }
 
 
 
