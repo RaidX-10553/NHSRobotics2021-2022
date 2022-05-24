@@ -19,7 +19,7 @@ import org.firstinspires.ftc.teamcode.subsystems.Arm;
 
 
 @TeleOp(name = "Ryan Teleop", group = "TeleOp")
-public class Robot extends LinearOpMode {
+public class RyanRobot extends LinearOpMode {
     //Intake
     DcMotor intakeMotor;
     Intake intakewheel;

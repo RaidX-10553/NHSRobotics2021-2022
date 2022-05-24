@@ -15,11 +15,11 @@ import org.firstinspires.ftc.teamcode.subsystems.Claw;
 import org.firstinspires.ftc.teamcode.subsystems.Duck;
 import org.firstinspires.ftc.teamcode.subsystems.Arm;
 
-// What?
 
 
-@TeleOp(name = "Ryan Teleop", group = "TeleOp")
-public class Robot extends LinearOpMode {
+
+@TeleOp(name = "Declan Teleop", group = "TeleOp")
+public class DeclanRobot extends LinearOpMode {
     //Intake
     DcMotor intakeMotor;
     Intake intakewheel;
