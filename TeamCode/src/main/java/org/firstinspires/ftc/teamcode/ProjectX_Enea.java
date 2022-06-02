@@ -1,4 +1,6 @@
 /*
+
+/*
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -29,5 +31,5 @@ public class ProjectX_Enea {
         Back.setDirection(DcMotor.Direction.REVERSE);
     }
 }
-enea is a tard
  */
+// enea is a tard    kys anton and wilbur

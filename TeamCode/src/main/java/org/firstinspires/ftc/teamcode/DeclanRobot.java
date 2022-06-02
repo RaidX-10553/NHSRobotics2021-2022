@@ -16,6 +16,8 @@ import org.firstinspires.ftc.teamcode.subsystems.Claw;
 import org.firstinspires.ftc.teamcode.subsystems.Declan;
 import org.firstinspires.ftc.teamcode.subsystems.Declan2;
 import org.firstinspires.ftc.teamcode.subsystems.Duck;
+import org.firstinspires.ftc.teamcode.subsystems.Duck2;
+
 
 
 
@@ -44,6 +46,9 @@ public class DeclanRobot extends LinearOpMode {
     //Duck Spin
     DcMotor duckMotor;
     Duck duckSpin;
+
+    DcMotor duckMotor2;
+    Duck2 duckSpin2;
 
 
 
@@ -78,13 +83,14 @@ public class DeclanRobot extends LinearOpMode {
         duckMotor = hardwareMap.dcMotor.get("duck");
         duckSpin = new Duck(duckMotor);
 
+        duckMotor2 = hardwareMap.dcMotor.get("duck2");
+        duckSpin2 = new Duck2(duckMotor2);
 
         
 
 
         waitForStart();
-        armMotor1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        armMotor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
 
         armMotor2.setDirection(DcMotorSimple.Direction.REVERSE);
 
@@ -159,13 +165,13 @@ public class DeclanRobot extends LinearOpMode {
             if (gamepad2.a && !armMotor1.isBusy()) {
                 telemetry.addData("Level:", "1" );
                 arm1.Level1();
-                arm2.Level3();
+                arm2.Level1();
             }
 
             if (gamepad2.b && !armMotor1.isBusy()) {
                 telemetry.addData("Level:", "2" );
                 arm1.Level2();
-                arm2.Level3();
+                arm2.Level2();
             }
 
             if (gamepad2.y && !armMotor1.isBusy()) {
@@ -185,15 +191,16 @@ public class DeclanRobot extends LinearOpMode {
 
 
             // Claw
+            /*
             if (gamepad2.dpad_down) {
                 claw.Open();
             }
-
             if (gamepad2.dpad_up) {
                 claw.Close();
 
             }
-
+            */
+            clawServo.setPower(gamepad2.left_stick_y);
 
 
 
@@ -202,14 +209,18 @@ public class DeclanRobot extends LinearOpMode {
             //DUCK SPIN
             if (gamepad2.left_bumper) {
                 duckSpin.Spin();
+                duckSpin2.Spin();
             } else{
                 duckSpin.DontSpin();
+                duckSpin2.DontSpin();
             }
 
             if (gamepad2.right_bumper) {
                 duckSpin.ReverseSpin();
+                duckSpin2.ReverseSpin();
             } else{
                 duckSpin.DontSpin();
+                duckSpin2.DontSpin();
             }
 
 

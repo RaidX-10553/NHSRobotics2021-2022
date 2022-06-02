@@ -7,7 +7,7 @@ import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.util.Util;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.subsystems.Intake;
@@ -32,7 +32,7 @@ public class RyanRobot extends LinearOpMode {
     Arm arm;
 
     //Bucket Servo
-    Servo bucketServo;
+    CRServo bucketServo;
     Bucket bucket;
     
     //Duck Spin
@@ -57,7 +57,7 @@ public class RyanRobot extends LinearOpMode {
         intakewheel = new Intake(intakeMotor);
 
         //Bucket Servo
-        bucketServo = hardwareMap.servo.get("bucket");
+        bucketServo = hardwareMap.crservo.get("bucket");
         bucket = new Bucket(bucketServo);
 
         //Arm
@@ -74,7 +74,7 @@ public class RyanRobot extends LinearOpMode {
 
         waitForStart();
         armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        armMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+
 
 
         while (opModeIsActive()) {
@@ -158,6 +158,7 @@ public class RyanRobot extends LinearOpMode {
             if (gamepad2.a && !armMotor.isBusy()) {
                 telemetry.addData("Level:", "1" );
                 arm.Level1();
+
             }
 
             if (gamepad2.b && !armMotor.isBusy()) {
@@ -180,13 +181,22 @@ public class RyanRobot extends LinearOpMode {
 
 
             // Bucket
+            /*
             if (gamepad2.dpad_down) {
+                //bucketServo.setDirection(DcMotorSimple.Direction.REVERSE;)
                 bucket.Home();
+            } else {
+                bucket.off();
             }
 
             if (gamepad2.dpad_up) {
+                //bucketServo.setDirection(DcMotorSimple.Direction.REVERSE);
                 bucket.Dump();
+            } else {
+                bucket.off();
             }
+            */
+            bucketServo.setPower(gamepad2.left_stick_y);
 
 
 

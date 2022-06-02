@@ -18,7 +18,7 @@ public class Claw {
         this.clawServo.setPower(1);
     }
     public void Open(){
-        this.clawServo.setPower(0);
+        this.clawServo.setPower(-1);
     }
 
 

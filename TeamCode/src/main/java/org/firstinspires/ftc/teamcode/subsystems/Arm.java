@@ -8,7 +8,7 @@ public class Arm {
 
     public Arm(DcMotorEx armMotor) {
         this.armMotor = armMotor;
-        this.armMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+
     }
     public void Level1() {
         this.armMotor.setTargetPosition(1120);
