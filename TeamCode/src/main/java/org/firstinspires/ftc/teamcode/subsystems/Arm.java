@@ -13,23 +13,23 @@ public class Arm {
     public void Level1() {
         this.armMotor.setTargetPosition(1120);
         this.armMotor.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
-        this.armMotor.setVelocity(1400);
+        this.armMotor.setVelocity(2600);
     }
     public void Level2() {
         this.armMotor.setTargetPosition(2240);
         this.armMotor.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
-        this.armMotor.setVelocity(1400);
+        this.armMotor.setVelocity(2600);
     }
     public void Level3() {
-        this.armMotor.setTargetPosition(3360);
+        this.armMotor.setTargetPosition(4928);
         this.armMotor.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
-        this.armMotor.setVelocity(1400);
+        this.armMotor.setVelocity(2600);
     }
 
     public void Home() {
         this.armMotor.setTargetPosition(-armMotor.getCurrentPosition());
         this.armMotor.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
-        this.armMotor.setVelocity(1400);
+        this.armMotor.setVelocity(2600);
         this.armMotor.setTargetPosition(0);
 
     }

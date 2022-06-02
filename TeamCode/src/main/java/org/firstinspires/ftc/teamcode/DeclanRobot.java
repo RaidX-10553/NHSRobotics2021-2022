@@ -7,13 +7,15 @@ import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Util;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
-import org.firstinspires.ftc.teamcode.subsystems.Intake;
+
 import org.firstinspires.ftc.teamcode.subsystems.Claw;
+import org.firstinspires.ftc.teamcode.subsystems.Declan;
+import org.firstinspires.ftc.teamcode.subsystems.Declan2;
 import org.firstinspires.ftc.teamcode.subsystems.Duck;
-import org.firstinspires.ftc.teamcode.subsystems.Arm;
 
 
 
@@ -21,17 +23,21 @@ import org.firstinspires.ftc.teamcode.subsystems.Arm;
 @TeleOp(name = "Declan Teleop", group = "TeleOp")
 public class DeclanRobot extends LinearOpMode {
     //Intake
-    DcMotor intakeMotor;
-    Intake intakewheel;
+   // DcMotor intakeMotor;
+    //Intake intakewheel;
 
     //Drive
     SampleMecanumDrive mecanumDrive;
 
     //Arm
-    DcMotorEx armMotor;
-    Arm arm;
+    DcMotorEx armMotor1;
+    Declan arm1;
 
-    //Bucket Servo
+    DcMotorEx armMotor2;
+    Declan2 arm2;
+
+
+    //claw Servo
     CRServo clawServo;
     Claw claw;
     
@@ -53,16 +59,20 @@ public class DeclanRobot extends LinearOpMode {
         mecanumDrive = new SampleMecanumDrive(hardwareMap);
 
         //Intake
-        intakeMotor = hardwareMap.dcMotor.get("intake");
-        intakewheel = new Intake(intakeMotor);
+        //intakeMotor = hardwareMap.dcMotor.get("intake");
+        //intakewheel = new Intake(intakeMotor);
 
         //Bucket Servo
         clawServo = hardwareMap.crservo.get("claw");
         claw = new Claw(clawServo);
 
+
         //Arm
-        armMotor = hardwareMap.get(DcMotorEx.class, "arm");
-        arm = new Arm(armMotor);
+        armMotor1 = hardwareMap.get(DcMotorEx.class, "arm1");
+        arm1 = new Declan(armMotor1);
+
+        armMotor2 = hardwareMap.get(DcMotorEx.class, "arm2");
+        arm2 = new Declan2(armMotor2);
 
         //Duck Spin
         duckMotor = hardwareMap.dcMotor.get("duck");
@@ -73,7 +83,12 @@ public class DeclanRobot extends LinearOpMode {
 
 
         waitForStart();
-        //armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        armMotor1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        armMotor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        armMotor2.setDirection(DcMotorSimple.Direction.REVERSE);
+
+
 
         while (opModeIsActive()) {
 
@@ -135,42 +150,34 @@ public class DeclanRobot extends LinearOpMode {
             telemetry.update();
 
 
-            //Intake motor
-            if (gamepad2.left_trigger >= 0.5) {
-                intakewheel.In();
-            } else {
-                intakewheel.Off();
-            }
 
-            if (gamepad2.right_trigger >= 0.5) {
-                intakewheel.Out();
-            } else {
-                intakewheel.Off();
-
-            }
 
 
 
             
             // Arm Motors
-            if (gamepad2.a && !armMotor.isBusy()) {
+            if (gamepad2.a && !armMotor1.isBusy()) {
                 telemetry.addData("Level:", "1" );
-                arm.Level1();
+                arm1.Level1();
+                arm2.Level3();
             }
 
-            if (gamepad2.b && !armMotor.isBusy()) {
+            if (gamepad2.b && !armMotor1.isBusy()) {
                 telemetry.addData("Level:", "2" );
-                arm.Level2();
+                arm1.Level2();
+                arm2.Level3();
             }
 
-            if (gamepad2.y && !armMotor.isBusy()) {
+            if (gamepad2.y && !armMotor1.isBusy()) {
                 telemetry.addData("Level:", "3" );
-                arm.Level3();
+                arm1.Level3();
+                arm2.Level3();
             }
 
-            if (gamepad2.x && !armMotor.isBusy()) {
+            if (gamepad2.x && !armMotor1.isBusy()) {
                 telemetry.addData("Level:", "Home" );
-                arm.Home();
+                arm1.Home();
+                arm2.Home();
             }
             
 
@@ -184,6 +191,7 @@ public class DeclanRobot extends LinearOpMode {
 
             if (gamepad2.dpad_up) {
                 claw.Close();
+
             }
 
 
