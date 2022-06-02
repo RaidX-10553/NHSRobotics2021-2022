@@ -25,7 +25,7 @@ public class Arm {
         this.armMotor.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
         this.armMotor.setVelocity(2600);
     }
-
+//balls
     public void Home() {
         this.armMotor.setTargetPosition(-armMotor.getCurrentPosition());
         this.armMotor.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
