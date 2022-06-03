@@ -87,12 +87,13 @@ public class DeclanRobot extends LinearOpMode {
         duckSpin2 = new Duck2(duckMotor2);
 
         
+        armMotor2.setDirection(DcMotorSimple.Direction.REVERSE);
+
 
 
         waitForStart();
 
 
-        armMotor2.setDirection(DcMotorSimple.Direction.REVERSE);
 
 
 
@@ -162,25 +163,25 @@ public class DeclanRobot extends LinearOpMode {
 
             
             // Arm Motors
-            if (gamepad2.a && !armMotor1.isBusy()) {
+            if (gamepad2.a) {
                 telemetry.addData("Level:", "1" );
                 arm1.Level1();
                 arm2.Level1();
             }
 
-            if (gamepad2.b && !armMotor1.isBusy()) {
+            if (gamepad2.b) {
                 telemetry.addData("Level:", "2" );
                 arm1.Level2();
                 arm2.Level2();
             }
 
-            if (gamepad2.y && !armMotor1.isBusy()) {
+            if (gamepad2.y) {
                 telemetry.addData("Level:", "3" );
                 arm1.Level3();
                 arm2.Level3();
             }
 
-            if (gamepad2.x && !armMotor1.isBusy()) {
+            if (gamepad2.x) {
                 telemetry.addData("Level:", "Home" );
                 arm1.Home();
                 arm2.Home();
