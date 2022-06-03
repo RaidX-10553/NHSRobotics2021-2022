@@ -42,6 +42,8 @@ public class AutonomousBlueStorage extends LinearOpMode {
     DcMotor duckMotor;
     Duck duckSpin;
 
+    
+
     private void left() {
         FL.setTargetPosition(-1120);
         FR.setTargetPosition(1120);
@@ -189,6 +191,7 @@ public class AutonomousBlueStorage extends LinearOpMode {
         // Wait for the game to start (driver presses PLAY)
 
         waitForStart();
+        tbegin = getruntime()
 
         if (isStopRequested()) return;
         
@@ -197,7 +200,7 @@ public class AutonomousBlueStorage extends LinearOpMode {
         
 
         while (opModeIsActive()) {
-            telemetry.addData("","AUTO TIME");
+            telemetry.addData("AUTO DURATION", getruntime() - tbegin );
             telemetry.addData("position", FL.getCurrentPosition());
             telemetry.addData("", FR.getCurrentPosition());
             telemetry.addData("", BL.getCurrentPosition());
