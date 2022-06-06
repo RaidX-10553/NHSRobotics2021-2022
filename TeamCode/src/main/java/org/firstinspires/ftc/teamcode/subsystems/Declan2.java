@@ -21,7 +21,7 @@ public class Declan2 {
         this.armMotor2.setVelocity(1400);
     }
     public void Level3() {
-        this.armMotor2.setTargetPosition(3360);
+        this.armMotor2.setTargetPosition(3000);
         this.armMotor2.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
         this.armMotor2.setVelocity(1400);
     }

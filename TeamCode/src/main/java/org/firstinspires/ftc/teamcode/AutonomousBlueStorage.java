@@ -9,15 +9,22 @@ package org.firstinspires.ftc.teamcode;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 
+
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.CRServo;
+
+
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.teamcode.subsystems.Intake;
 import org.firstinspires.ftc.teamcode.subsystems.Bucket;
 import org.firstinspires.ftc.teamcode.subsystems.Duck;
 import org.firstinspires.ftc.teamcode.subsystems.Arm;
+import org.firstinspires.ftc.teamcode.subsystems.Claw;
 
 
 
@@ -25,10 +32,10 @@ import org.firstinspires.ftc.teamcode.subsystems.Arm;
 public class AutonomousBlueStorage extends LinearOpMode {
 
     /* Declare OpMode members. */
-    DcMotor FL;
-    DcMotor BL;
-    DcMotor BR;
-    DcMotor FR;
+    DcMotorEx FL;
+    DcMotorEx BL;
+    DcMotorEx BR;
+    DcMotorEx FR;
 
     //Arm
     DcMotorEx armMotor;
@@ -37,34 +44,39 @@ public class AutonomousBlueStorage extends LinearOpMode {
     //Bucket Servo
     CRServo bucketServo;
     Bucket bucket;
+
+    CRServo clawServo;
+    Claw claw;
     
     //Duck Spin
     DcMotor duckMotor;
     Duck duckSpin;
 
-    
+
+
+
 
     private void left() {
-        FL.setTargetPosition(-1120);
-        FR.setTargetPosition(1120);
-        BL.setTargetPosition(-1120);
-        BR.setTargetPosition(1120);
+        FL.setTargetPosition((int) -(1120 * (28.2743338823 / 23.747487364)));
+        FR.setTargetPosition((int) (1120 * (28.2743338823 / 23.747487364)));
+        BL.setTargetPosition((int) -(1120 * (28.2743338823 / 23.747487364)));
+        BR.setTargetPosition((int) (1120 * (28.2743338823 / 23.747487364)));
 
         FL.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
         FR.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
         BL.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
         BR.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
 
-        FL.setVelocity(2800);
-        FR.setVelocity(2800);
-        BL.setVelocity(2800);
-        BR.setVelocity(2800);
-   }
+        FL.setVelocity(1400);
+        FR.setVelocity(1400);
+        BL.setVelocity(1400);
+        BR.setVelocity(1400);
+    }
     private void right() {
-        FL.setTargetPosition(1120);
-        FR.setTargetPosition(-1120);
-        BL.setTargetPosition(1120);
-        BR.setTargetPosition(-1120);
+        FL.setTargetPosition((int) (1120 * (28.2743338823 / 23.747487364)));
+        FR.setTargetPosition((int) -(1120 * (28.2743338823 / 23.747487364)));
+        BL.setTargetPosition((int) (1120 * (28.2743338823 / 23.747487364)));
+        BR.setTargetPosition((int) -(1120 * (28.2743338823 / 23.747487364)));
 
         FL.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
         FR.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
@@ -75,12 +87,14 @@ public class AutonomousBlueStorage extends LinearOpMode {
         FR.setVelocity(2800);
         BL.setVelocity(2800);
         BR.setVelocity(2800);
-   } 
+    }
+
     private void front(int inches) {
-        FL.setTargetPosition(1120 * (inches / 3.77953));
-        FR.setTargetPosition(1120 * (inches / 3.77953));
-        BL.setTargetPosition(1120 * (inches / 3.77953));
-        BR.setTargetPosition(1120 * (inches / 3.77953));
+
+        FL.setTargetPosition((int) (1120 * (inches / 23.747487364)));
+        FR.setTargetPosition((int) (1120 * (inches / 23.747487364)));
+        BL.setTargetPosition((int) (1120 * (inches / 23.747487364)));
+        BR.setTargetPosition((int) (1120 * (inches / 23.747487364)));
 
         FL.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
         FR.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
@@ -96,12 +110,12 @@ public class AutonomousBlueStorage extends LinearOpMode {
         FR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         BL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         BR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-   }
+    }
     private void back(int inches) {
-        FL.setTargetPosition(-(1120 * (inches / 3.77953)));
-        FR.setTargetPosition(-(1120 * (inches / 3.77953)));
-        BL.setTargetPosition(-(1120 * (inches / 3.77953)));
-        BR.setTargetPosition(-(1120 * (inches / 3.77953)));
+        FL.setTargetPosition((int) -(1120 * (inches / 23.747487364)));
+        FR.setTargetPosition((int) -(1120 * (inches / 23.747487364)));
+        BL.setTargetPosition((int) -(1120 * (inches / 23.747487364)));
+        BR.setTargetPosition((int) -(1120 * (inches / 23.747487364)));
 
         FL.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
         FR.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
@@ -117,12 +131,12 @@ public class AutonomousBlueStorage extends LinearOpMode {
         FR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         BL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         BR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-   }
+    }
     private void leftStrafe(int inches) {
-        FL.setTargetPosition(-(1120 * (inches / 3.77953)));
-        FR.setTargetPosition((1120 * (inches / 3.77953)));
-        BL.setTargetPosition((1120 * (inches / 3.77953)));
-        BR.setTargetPosition(-(1120 * (inches / 3.77953)));
+        FL.setTargetPosition((int) -(1120 * (inches / 23.747487364)));
+        FR.setTargetPosition((int) (1120 * (inches / 23.747487364)));
+        BL.setTargetPosition((int) (1120 * (inches / 23.747487364)));
+        BR.setTargetPosition((int) -(1120 * (inches / 23.747487364)));
 
         FL.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
         FR.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
@@ -138,12 +152,12 @@ public class AutonomousBlueStorage extends LinearOpMode {
         FR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         BL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         BR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-   }
+    }
     private void rightStrafe(int inches) {
-        FL.setTargetPosition((1120 * (inches / 3.77953)));
-        FR.setTargetPosition(-(1120 * (inches / 3.77953)));
-        BL.setTargetPosition(-(1120 * (inches / 3.77953)));
-        BR.setTargetPosition((1120 * (inches / 3.77953)));
+        FL.setTargetPosition((int) (1120 * (inches / 23.747487364)));
+        FR.setTargetPosition((int) -(1120 * (inches / 23.747487364)));
+        BL.setTargetPosition((int) -(1120 * (inches / 23.747487364)));
+        BR.setTargetPosition((int) (1120 * (inches / 23.747487364)));
 
         FL.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
         FR.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
@@ -159,7 +173,7 @@ public class AutonomousBlueStorage extends LinearOpMode {
         FR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         BL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         BR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-   }
+    }
 
     @Override
     public void runOpMode() {
@@ -173,6 +187,10 @@ public class AutonomousBlueStorage extends LinearOpMode {
         //Bucket Servo
         bucketServo = hardwareMap.crservo.get("bucket");
         bucket = new Bucket(bucketServo);
+
+        FR.setDirection(DcMotorSimple.Direction.REVERSE);
+        BR.setDirection(DcMotorSimple.Direction.REVERSE);
+
 
         //Arm
         armMotor = hardwareMap.get(DcMotorEx.class, "arm");
@@ -191,16 +209,18 @@ public class AutonomousBlueStorage extends LinearOpMode {
         // Wait for the game to start (driver presses PLAY)
 
         waitForStart();
-        tbegin = getruntime()
+
 
         if (isStopRequested()) return;
-        
+
         front(18);
+        //front(27);
+        //left();
+        //front(34.5);
 
         
 
         while (opModeIsActive()) {
-            telemetry.addData("AUTO DURATION", getruntime() - tbegin );
             telemetry.addData("position", FL.getCurrentPosition());
             telemetry.addData("", FR.getCurrentPosition());
             telemetry.addData("", BL.getCurrentPosition());
@@ -211,11 +231,12 @@ public class AutonomousBlueStorage extends LinearOpMode {
 
             idle();
         }
-        
+
         FL.setPower(0);
         FR.setPower(0);
         BL.setPower(0);
         BR.setPower(0);
+        bucketServo.setPower(0);
     }
 }
 
