@@ -101,10 +101,10 @@ public class AutonomousBlueStorage extends LinearOpMode {
         BL.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
         BR.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
 
-        FL.setVelocity(2800);
-        FR.setVelocity(2800);
-        BL.setVelocity(2800);
-        BR.setVelocity(2800);
+        FL.setVelocity(1400);
+        FR.setVelocity(1400);
+        BL.setVelocity(1400);
+        BR.setVelocity(1400);
 
         FL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         FR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -188,8 +188,8 @@ public class AutonomousBlueStorage extends LinearOpMode {
         bucketServo = hardwareMap.crservo.get("bucket");
         bucket = new Bucket(bucketServo);
 
-        FR.setDirection(DcMotorSimple.Direction.REVERSE);
-        BR.setDirection(DcMotorSimple.Direction.REVERSE);
+        FL.setDirection(DcMotorSimple.Direction.REVERSE);
+        BL.setDirection(DcMotorSimple.Direction.REVERSE);
 
 
         //Arm
@@ -213,10 +213,8 @@ public class AutonomousBlueStorage extends LinearOpMode {
 
         if (isStopRequested()) return;
 
-        front(18);
-        //front(27);
-        //left();
-        //front(34.5);
+
+
 
         
 
@@ -227,6 +225,9 @@ public class AutonomousBlueStorage extends LinearOpMode {
             telemetry.addData("", BR.getCurrentPosition());
             telemetry.update();
 
+            front(27);
+            left();
+            back(34);
 
 
             idle();

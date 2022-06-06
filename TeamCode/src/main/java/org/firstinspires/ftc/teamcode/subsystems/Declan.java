@@ -11,17 +11,17 @@ public class Declan {
 
     }
     public void Level1() {
-        this.armMotor1.setTargetPosition(1120);
+        this.armMotor1.setTargetPosition(400);
         this.armMotor1.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
         this.armMotor1.setVelocity(1400);
     }
     public void Level2() {
-        this.armMotor1.setTargetPosition(2240);
+        this.armMotor1.setTargetPosition(500);
         this.armMotor1.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
         this.armMotor1.setVelocity(1400);
     }
     public void Level3() {
-        this.armMotor1.setTargetPosition(3000);
+        this.armMotor1.setTargetPosition(600);
         this.armMotor1.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
         this.armMotor1.setVelocity(1400);
     }

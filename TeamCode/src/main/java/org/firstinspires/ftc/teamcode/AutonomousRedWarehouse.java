@@ -204,9 +204,7 @@ public class AutonomousRedWarehouse extends LinearOpMode {
         if (isStopRequested()) return;
 
 
-        front(25);
-        right();
-        front(46);
+
 
 
 
@@ -217,7 +215,9 @@ public class AutonomousRedWarehouse extends LinearOpMode {
             telemetry.addData("", BR.getCurrentPosition());
             telemetry.update();
 
-
+            back(25);
+            left();
+            back(46);
 
             idle();
         }

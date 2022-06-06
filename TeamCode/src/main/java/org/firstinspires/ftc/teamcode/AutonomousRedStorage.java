@@ -203,10 +203,10 @@ public class AutonomousRedStorage extends LinearOpMode {
 
         if (isStopRequested()) return;
 
+
+        back(27);
         left();
-        //front(27);
-        //right();
-        //front(24);
+        back(24);
 
 
 
@@ -217,6 +217,9 @@ public class AutonomousRedStorage extends LinearOpMode {
             telemetry.addData("", BR.getCurrentPosition());
             telemetry.update();
 
+            back(27);
+            left();
+            back(24);
 
 
             idle();
